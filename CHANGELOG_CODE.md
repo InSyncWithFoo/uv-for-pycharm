@@ -1,12 +1,13 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
-# Changelog
-
-This page documents user-facing changes.
-For code changes, see [`CHANGELOG_CODE.md`][_-1].
+# Code changelog
 
 
-  [_-1]: ./CHANGELOG_CODE.md
+This page documents code changes.
+For user-facing changes, see [`CHANGELOG.md`][_-1].
+
+
+  [_-1]: ./CHANGELOG.md
 
 
 ## [Unreleased]
