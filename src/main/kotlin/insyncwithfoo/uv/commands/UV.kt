@@ -30,17 +30,17 @@ internal sealed class UV {
     
     protected var blocking = false
     
-    private fun build(command: Command): Command {
-        // TODO: Make the timeout limit configurable
-        command.workingDirectory = workingDirectory
-        command.timeout = 10_000
-        
-        return command
-    }
-    
-    protected fun run(command: Command, runner: Command.() -> ProcessOutput): ProcessOutput {
-        return build(command).runner()
-    }
+    // private fun build(command: Command): Command {
+    //     // TODO: Make the timeout limit configurable
+    //     command.workingDirectory = workingDirectory
+    //     command.timeout = 10_000
+    //    
+    //     return command
+    // }
+    //
+    // protected fun run(command: Command, runner: Command.() -> ProcessOutput): ProcessOutput {
+    //     return build(command).runner()
+    // }
     
     companion object {
         
@@ -97,7 +97,7 @@ internal open class FreeUV(override val executable: Path) : UV() {
 internal class LockedUV(executable: Path, override val workingDirectory: Path) : FreeUV(executable) {
     
     fun createVenv(baseInterpreter: Path, name: String? = null) {
-        val command = CreateVenvCommand(executable, baseInterpreter, name)
+        val command = CreateVenvCommand(executable, workingDirectory, baseInterpreter, name)
         val output = command.run()
         
         if (!output.checkSuccess(LOGGER)) {

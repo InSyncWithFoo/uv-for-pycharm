@@ -16,7 +16,7 @@ internal abstract class Command {
     abstract val executable: Path
     abstract val arguments: List<String>
     
-    var workingDirectory: Path? = null
+    open val workingDirectory: Path? = null
     var timeout: Int = -1
     
     open val runningMessage: String = "Running command..."

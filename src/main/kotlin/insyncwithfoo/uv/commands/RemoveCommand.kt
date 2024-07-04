@@ -5,6 +5,7 @@ import java.nio.file.Path
 
 internal class RemoveCommand(
     override val executable: Path,
+    override val workingDirectory: Path?,
     private val target: String
 ) : Command() {
     

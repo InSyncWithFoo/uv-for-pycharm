@@ -11,7 +11,7 @@
 Features:
 
 * [ ] Create new projects
-  * [ ] From scratch
+  * [x] From scratch
   * [ ] From existing
   * [ ] Multiple modules
 * [ ] Manage packages

@@ -6,6 +6,7 @@ import java.nio.file.Path
 
 internal class AddCommand(
     override val executable: Path,
+    override val workingDirectory: Path?,
     private val target: PythonPackageSpecification
 ) : Command() {
     

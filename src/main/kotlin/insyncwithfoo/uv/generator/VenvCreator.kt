@@ -71,7 +71,6 @@ internal class VenvCreator(
             UVSdkAdditionalData(),
             suggestedName
         )
-        
     }
     
     /**
@@ -97,10 +96,6 @@ internal class VenvCreator(
         return interpreterPath
     }
     
-    // FIXME:
-    // This seems to require write access,
-    // but if it is wrapped in runWriteAction/writeAction,
-    // it will never run.
     private fun createVenv() {
         val baseInterpreterPath = baseSdk.homePath!!.toPathOrNull()!!
         UV.create(executable, projectPath).createVenv(baseInterpreterPath, directoryName)
