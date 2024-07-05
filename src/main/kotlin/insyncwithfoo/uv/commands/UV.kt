@@ -1,7 +1,6 @@
 package insyncwithfoo.uv.commands
 
 import com.intellij.execution.configurations.PathEnvironmentVariableUtil
-import com.intellij.execution.process.ProcessOutput
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project

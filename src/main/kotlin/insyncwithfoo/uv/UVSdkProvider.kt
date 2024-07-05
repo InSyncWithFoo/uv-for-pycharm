@@ -38,12 +38,28 @@ internal class UVSdkProvider : PySdkProvider {
         TODO("Not yet implemented")
     }
     
-    override fun getSdkAdditionalText(sdk: Sdk) = when {
-        sdk.isUV -> sdk.versionString
-        else -> null
-    }
+    /**
+     * The string to be appended to the suggested SDK name
+     * when displayed in the status bar.
+     * 
+     * For example: A default `venv` environments may have
+     * its rendered label read `Python 3.12 (project)`.
+     * If this method of it were to return `sdk.versionString`,
+     * it would read `Python 3.12 (project) [Python 3.12.4]`.
+     * 
+     * @see com.jetbrains.python.sdk.name
+     */
+    override fun getSdkAdditionalText(sdk: Sdk) = null
     
-    override fun getSdkIcon(sdk: Sdk) = UVIcon.BIG.takeIf { sdk.isUV }
+    /**
+     * The icon to be used in the <i>Python Interpreter</i> popup,
+     * which is triggered by clicking the corresponding status bar cell.
+     * 
+     * Size: 16x16
+     * 
+     * @see com.jetbrains.python.sdk.icon
+     */
+    override fun getSdkIcon(sdk: Sdk) = UVSdkFlavor.icon.takeIf { sdk.isUV }
     
     override fun loadAdditionalDataForSdk(element: Element) =
         UVSdkAdditionalData.load(element)
