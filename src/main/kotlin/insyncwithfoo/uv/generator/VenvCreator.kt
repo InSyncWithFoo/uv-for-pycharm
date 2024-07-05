@@ -1,12 +1,6 @@
 package insyncwithfoo.uv.generator
 
-import com.intellij.execution.process.ProcessOutput
-import com.intellij.openapi.application.runWriteAction
-import com.intellij.openapi.application.writeAction
-import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
-import com.intellij.openapi.progress.Task
-import com.intellij.openapi.progress.Task.WithResult
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.projectRoots.Sdk
 import com.intellij.openapi.projectRoots.impl.SdkConfigurationUtil
@@ -16,15 +10,14 @@ import com.jetbrains.python.sdk.PythonSdkType
 import com.jetbrains.python.sdk.PythonSdkUtil
 import com.jetbrains.python.sdk.associateWithModule
 import com.jetbrains.python.sdk.excludeInnerVirtualEnv
-import com.jetbrains.rd.util.ExecutionException
 import insyncwithfoo.uv.UVSdkAdditionalData
 import insyncwithfoo.uv.commands.UV
 import insyncwithfoo.uv.message
 import insyncwithfoo.uv.somethingIsWrong
 import insyncwithfoo.uv.toPathOrNull
-import kotlinx.coroutines.runBlocking
 import java.nio.file.Path
 import kotlin.io.path.div
+import kotlin.io.path.name
 
 
 internal class VenvCreator(
@@ -35,7 +28,10 @@ internal class VenvCreator(
 ) {
     
     private val suggestedName: String
-        get() = "${baseSdk.name} [uv] ($directoryName)"
+        get() {
+            val pythonAndVersion = PythonSdkType.suggestBaseSdkName(baseSdk.homePath!!)
+            return "$pythonAndVersion [uv] (${projectPath.name})"
+        }
     
     private val venvRoot: Path
         get() = projectPath / directoryName
