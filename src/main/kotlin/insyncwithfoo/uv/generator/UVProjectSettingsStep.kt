@@ -1,6 +1,8 @@
 package insyncwithfoo.uv.generator
 
 import com.intellij.ide.IdeBundle
+import com.intellij.openapi.observable.properties.GraphProperty
+import com.intellij.openapi.observable.properties.ObservableProperty
 import com.intellij.openapi.observable.properties.PropertyGraph
 import com.intellij.openapi.observable.util.bind
 import com.intellij.openapi.observable.util.bindBooleanStorage
@@ -43,6 +45,13 @@ import kotlin.io.path.isExecutable
 import kotlin.io.path.isRegularFile
 
 
+private fun <T> GraphProperty<T>.dependsOn(vararg parents: ObservableProperty<*>, update: () -> T) {
+    parents.forEach { parent ->
+        dependsOn(parent, update)
+    }
+}
+
+
 private fun Panel.rowWithTopGap(label: @Nls String, init: Row.() -> Unit) {
     row(label, init).topGap(TopGap.MEDIUM)
 }
@@ -72,20 +81,17 @@ internal class UVProjectSettingsStep(projectGenerator: DirectoryProjectGenerator
         }
     
     private val projectPathHint = propertyGraph.property("").apply {
-        dependsOn(projectName, ::updatedLocationHint)
-        dependsOn(projectLocation, ::updatedLocationHint)
-    }
-    private val updatedLocationHint: String
-        get() {
+        dependsOn(projectName, projectLocation) {
             val projectPath = projectPath
             
-            return when {
+            when {
                 projectPath == null -> message("newProjectPanel.hint.invalidPath")
                 projectPath.isRegularFile() -> message("newProjectPanel.hint.existingFile")
                 projectPath.isNonEmptyDirectory() -> message("newProjectPanel.hint.nonEmptyDirectory")
                 else -> PyBundle.message("new.project.location.hint", projectPath)
             }
         }
+    }
     private val projectPathIsValid = propertyGraph.property(false).apply {
         dependsOn(projectPathHint) {
             projectPathHint.get() == PyBundle.message("new.project.location.hint", projectPath)
@@ -202,7 +208,7 @@ internal class UVProjectSettingsStep(projectGenerator: DirectoryProjectGenerator
                     makeFlexible()
                     bindText(uvExecutablePath)
                     
-                    uvExecutablePath.set(UV.savedOrDetectExecutablePath()?.toString() ?: "")
+                    uvExecutablePath.set(UV.savedOrDetectExecutable()?.toString() ?: "")
                 }
             }
             row("") {

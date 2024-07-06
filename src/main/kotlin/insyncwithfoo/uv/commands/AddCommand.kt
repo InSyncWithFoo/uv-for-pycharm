@@ -4,16 +4,20 @@ import com.jetbrains.python.packaging.common.PythonPackageSpecification
 import java.nio.file.Path
 
 
-internal class AddCommand(
+internal open class AddCommand(
     override val executable: Path,
-    override val workingDirectory: Path?,
+    override val workingDirectory: Path,
     private val target: PythonPackageSpecification
-) : Command() {
+) : Command<Successful>() {
     
     override val arguments: List<String>
-        get() = TODO("Not yet implemented")
+        get() = listOf("add", target.run { name + versionSpecs.orEmpty() })
     
     override val runningMessage: String
-        get() = "Adding ${target.versionSpecs}..."
+        get() = "Adding ${target}..."
+    
+    override fun run(): Successful {
+        return runProcess().checkSuccess(LOGGER)
+    }
     
 }

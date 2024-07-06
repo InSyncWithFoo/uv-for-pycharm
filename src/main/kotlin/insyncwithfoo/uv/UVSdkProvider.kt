@@ -52,7 +52,7 @@ internal class UVSdkProvider : PySdkProvider {
     override fun getSdkAdditionalText(sdk: Sdk) = null
     
     /**
-     * The icon to be used in the <i>Python Interpreter</i> popup,
+     * The icon to be used in the *Python Interpreter* popup,
      * which is triggered by clicking the corresponding status bar cell.
      * 
      * Size: 16x16

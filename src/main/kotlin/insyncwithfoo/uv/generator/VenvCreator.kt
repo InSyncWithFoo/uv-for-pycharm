@@ -1,5 +1,6 @@
 package insyncwithfoo.uv.generator
 
+import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.projectRoots.Sdk
@@ -47,7 +48,9 @@ internal class VenvCreator(
         newSdk?.associateWithModule(module = null, projectPath.toString()) ?: return null
         project.excludeInnerVirtualEnv(newSdk)
         PySdkSettings.instance.onVirtualEnvCreated(baseSdk, venvRoot, projectPath.toString())
-        UV.savedExecutablePath = executable
+        
+        runWriteAction { newSdk.sdkModificator.commitChanges() }
+        UV.savedExecutable = executable
         
         return newSdk
     }
@@ -85,8 +88,8 @@ internal class VenvCreator(
         val interpreterPath = PythonSdkUtil.getPythonExecutable(venvRoot.toString())
         
         if (interpreterPath == null) {
-            somethingIsWrong("Cannot create virtual environment.")
-            error("Cannot create virtual environment at $venvRoot using $executable. See logs for details.")
+            somethingIsWrong("Cannot create virtual environment. See the logs for details.")
+            error("Cannot create virtual environment at $venvRoot using $executable.")
         }
         
         return interpreterPath
@@ -94,7 +97,13 @@ internal class VenvCreator(
     
     private fun createVenv() {
         val baseInterpreterPath = baseSdk.homePath!!.toPathOrNull()!!
-        UV.create(executable, projectPath).createVenv(baseInterpreterPath, directoryName)
+        val uv = UV.create(executable, projectPath)
+        
+        val successful = uv.createVenv(baseInterpreterPath, directoryName)
+        
+        if (!successful) {
+            somethingIsWrong("uv reported an error. See the logs for details.")
+        }
     }
     
 }

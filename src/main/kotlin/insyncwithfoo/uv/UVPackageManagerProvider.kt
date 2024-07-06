@@ -7,15 +7,13 @@ import com.jetbrains.python.packaging.management.PythonPackageManagerProvider
 
 
 /**
- * Exists only to provide [UVPackageManager].
- * 
- * * Usefulness: Known
- * * Implementation: Complete
+ * Responsible for returning [UVPackageManager].
  */
 @Suppress("UnstableApiUsage")
 internal class UVPackageManagerProvider : PythonPackageManagerProvider {
     
-    override fun createPackageManagerForSdk(project: Project, sdk: Sdk): PythonPackageManager? =
-        UVPackageManager(project, sdk).takeIf { sdk.isUV }
+    override fun createPackageManagerForSdk(project: Project, sdk: Sdk): PythonPackageManager? {
+        return UVPackageManager(project, sdk).takeIf { sdk.isUV }
+    }
     
 }

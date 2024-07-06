@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.changelog)
     alias(libs.plugins.qodana)
     alias(libs.plugins.kover)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 group = properties("pluginGroup").get()
@@ -22,6 +23,7 @@ repositories {
 
 // Dependencies are managed with Gradle version catalog - read more: https://docs.gradle.org/current/userguide/platforms.html#sub:version-catalog
 dependencies {
+    compileOnly(libs.kotlinxSerialization)
     testImplementation(kotlin("test"))
 }
 

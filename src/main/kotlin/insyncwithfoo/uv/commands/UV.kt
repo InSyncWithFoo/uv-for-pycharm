@@ -7,21 +7,23 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.SystemInfo
 import com.jetbrains.python.packaging.common.PythonPackageSpecification
 import insyncwithfoo.uv.path
-import insyncwithfoo.uv.somethingIsWrong
 import insyncwithfoo.uv.toPathOrNull
 import java.nio.file.Path
 
 
-private const val UV_EXECUTABLE_PATH = "insyncwithfoo.uv.executablePath"
+private const val UV_EXECUTABLE_PATH = "insyncwithfoo.uv.executable"
 
 
-private var PropertiesComponent.uvExecutablePath: Path?
+private var PropertiesComponent.uvExecutable: Path?
     get() = getValue(UV_EXECUTABLE_PATH)?.toPathOrNull()
     set(value) {
         setValue(UV_EXECUTABLE_PATH, value.toString())
     }
 
 
+/**
+ * Handles interactions with the executable.
+ */
 internal sealed class UV {
     
     protected abstract val executable: Path
@@ -46,9 +48,9 @@ internal sealed class UV {
         @JvmStatic
         protected val LOGGER = Logger.getInstance(UV::class.java)
         
-        var savedExecutablePath by PropertiesComponent.getInstance()::uvExecutablePath
+        var savedExecutable by PropertiesComponent.getInstance()::uvExecutable
         
-        fun detectExecutable(): Path? {
+        private fun detectExecutable(): Path? {
             val fileName = when {
                 SystemInfo.isWindows -> "uv.exe"
                 else -> "uv"
@@ -57,8 +59,8 @@ internal sealed class UV {
             return PathEnvironmentVariableUtil.findInPath(fileName)?.toPath()
         }
         
-        fun savedOrDetectExecutablePath() =
-            savedExecutablePath ?: detectExecutable()
+        fun savedOrDetectExecutable() =
+            savedExecutable ?: detectExecutable()
         
         fun create(executable: Path): FreeUV {
             return FreeUV(executable)
@@ -72,65 +74,72 @@ internal sealed class UV {
             return ProjectUV(executable, project)
         }
         
-    }
-    
-}
-
-
-internal open class FreeUV(override val executable: Path) : UV() {
-    
-    override val workingDirectory: Path? = null
-    
-    fun version(): String? {
-        val output = VersionCommand(executable).run()
-        
-        return when {
-            output.checkSuccess(LOGGER) -> output.stdout
-            else -> null
+        fun createFree(): FreeUV? {
+            return savedOrDetectExecutable()?.let { create(it) }
         }
-    }
-    
-}
-
-
-internal class LockedUV(executable: Path, override val workingDirectory: Path) : FreeUV(executable) {
-    
-    fun createVenv(baseInterpreter: Path, name: String? = null) {
-        val command = CreateVenvCommand(executable, workingDirectory, baseInterpreter, name)
-        val output = command.run()
         
-        if (!output.checkSuccess(LOGGER)) {
-            somethingIsWrong("uv reported an error. See the logs for details.")
+        fun createLocked(projectPath: Path): LockedUV? {
+            return savedOrDetectExecutable()?.let { create(it, projectPath) }
         }
+        
+        fun createForProject(project: Project): ProjectUV? {
+            return savedOrDetectExecutable()?.let { create(it, project) }
+        }
+        
     }
     
 }
 
 
 /**
- * Handles interactions with the executable.
+ * Handles commands that are not dependent on a context.
+ */
+internal open class FreeUV(override val executable: Path) : UV() {
+    
+    override val workingDirectory: Path? = null
+    
+    fun version(): String {
+        return VersionCommand(executable).run()
+    }
+    
+}
+
+
+/**
+ * Handles commands that are bound to a path but not a project.
+ */
+internal class LockedUV(executable: Path, override val workingDirectory: Path) : FreeUV(executable) {
+    
+    fun createVenv(baseInterpreter: Path, name: String? = null): Boolean {
+        val output = CreateVenvCommand(executable, workingDirectory, baseInterpreter, name).run()
+        return output.checkSuccess(LOGGER)
+    }
+    
+}
+
+
+/**
+ * Handles commands that are bound to a project.
  */
 internal class ProjectUV(executable: Path, private val project: Project) : FreeUV(executable) {
     
-    override val workingDirectory: Path?
-        get() = project.path
+    override val workingDirectory: Path
+        get() = project.path!!
     
-    fun add(target: PythonPackageSpecification) {
-        // run(AddCommand(executable, target))
-        TODO("Not yet implemented")
+    fun add(target: PythonPackageSpecification): Successful {
+        return AddCommand(executable, workingDirectory, target).run()
     }
     
-    fun remove(target: String) {
-        // run(RemoveCommand(executable, target))
-        TODO("Not yet implemented")
+    fun remove(target: String): Successful {
+        return RemoveCommand(executable, workingDirectory, target).run()
     }
     
-    fun list() {
-        TODO("Not yet implemented")
+    fun list(): InstalledPackages? {
+        return ListPackagesCommand(executable, workingDirectory).run()
     }
     
-    fun show(target: String) {
-        TODO("Not yet implemented")
+    fun update(specification: PythonPackageSpecification): Successful {
+        return UpgradeCommand(executable, workingDirectory, specification).run()
     }
     
 }

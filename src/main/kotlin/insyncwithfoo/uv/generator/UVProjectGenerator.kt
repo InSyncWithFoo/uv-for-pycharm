@@ -8,6 +8,14 @@ import insyncwithfoo.uv.UVIcon
 import insyncwithfoo.uv.message
 
 
+/**
+ * This class is responsible for returning
+ * the name and icon of the "create new project" panel.
+ * Note that `getDescription()` isn't called.
+ * 
+ * It must remain a subclass of `PythonProjectGenerator`
+ * to be listed in the same section as other Python generators.
+ */
 internal class UVProjectGenerator : PythonProjectGenerator<Settings>(), CustomStepProjectGenerator<Settings> {
     
     override fun getName() = message("newProjectPanel.title")

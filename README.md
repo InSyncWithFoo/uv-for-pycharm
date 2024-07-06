@@ -1,12 +1,16 @@
 # uv for PyCharm
 
 > [!NOTE]
-> This plugin is still in development.
+> This plugin is a work-in-progress.
 > It may or may not work.
 > Use it at your own risk.
 
 <!-- Plugin description -->
 [uv][1] integration for PyCharm.
+
+
+  [1]: https://github.com/astral-sh/uv
+<!-- Plugin description end -->
 
 Features:
 
@@ -14,15 +18,12 @@ Features:
   * [x] From scratch
   * [ ] From existing
   * [ ] Multiple modules
-* [ ] Manage packages
+* [ ] Package management
   * [ ] Install and uninstall using the Python packages window
-  * [ ] Install as a quick fix/intention
 * [ ] Intentions
   * [ ] Install quick fix
 
-
-  [1]: https://github.com/astral-sh/uv
-<!-- Plugin description end -->
+Disclaimer: This plugin is not an official Astral project.
 
 
 ## Installation

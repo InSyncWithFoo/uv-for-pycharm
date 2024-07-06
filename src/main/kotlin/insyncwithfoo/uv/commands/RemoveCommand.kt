@@ -5,14 +5,18 @@ import java.nio.file.Path
 
 internal class RemoveCommand(
     override val executable: Path,
-    override val workingDirectory: Path?,
+    override val workingDirectory: Path,
     private val target: String
-) : Command() {
+) : Command<Successful>() {
     
     override val arguments: List<String>
-        get() = TODO("Not yet implemented")
+        get() = listOf("remove", target)
     
     override val runningMessage: String
         get() = "Removing $target..."
+    
+    override fun run(): Successful {
+        return runProcess().checkSuccess(LOGGER)
+    }
     
 }

@@ -50,10 +50,10 @@
 		<pySdkProvider implementation="insyncwithfoo.uv.UVSdkProvider"/>
 		
 		<!--suppress PluginXmlValidity -->
-		<!-- <pythonPackageManagerProvider
+		<pythonPackageManagerProvider
 			id="uv"
 			order="first"
-			implementation="insyncwithfoo.uv.UVPackageManagerProviderer"
-		/> -->
+			implementation="insyncwithfoo.uv.UVPackageManagerProvider"
+		/>
 	</extensions>
 </idea-plugin>

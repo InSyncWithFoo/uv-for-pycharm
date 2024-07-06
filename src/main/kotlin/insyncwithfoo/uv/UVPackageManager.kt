@@ -1,44 +1,81 @@
 package insyncwithfoo.uv
 
+import com.intellij.openapi.application.writeAction
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.projectRoots.Sdk
+import com.intellij.openapi.roots.OrderRootType
+import com.intellij.openapi.vfs.VfsUtil
 import com.jetbrains.python.packaging.common.PythonPackage
 import com.jetbrains.python.packaging.common.PythonPackageSpecification
 import com.jetbrains.python.packaging.management.PythonPackageManager
 import com.jetbrains.python.packaging.management.PythonRepositoryManager
 import com.jetbrains.python.packaging.pip.PipRepositoryManager
+import com.jetbrains.python.sdk.PythonSdkUpdater
+import insyncwithfoo.uv.commands.UV
+import insyncwithfoo.uv.commands.UVReportedError
 
 
 /**
- * The methods get called when corresponding functionalities
+ * This class's methods get called when corresponding functionalities
  * of the "Python packages" window are used.
- * 
- * * Usefulness: Known
- * * Implementation: Incomplete
  */
 @Suppress("UnstableApiUsage")
 internal class UVPackageManager(project: Project, sdk: Sdk) : PythonPackageManager(project, sdk) {
     
-    override val installedPackages: List<PythonPackage>
-        get() = TODO("Not yet implemented")
+    private val uv by lazy { UV.createForProject(project)!! }
+    
+    override var installedPackages: List<PythonPackage> = emptyList()
+        private set
     
     override val repositoryManager: PythonRepositoryManager
         get() = PipRepositoryManager(project, sdk)
     
-    override suspend fun installPackage(specification: PythonPackageSpecification): Result<List<PythonPackage>> {
-        TODO("Not yet implemented")
-    }
-    
     override suspend fun reloadPackages(): Result<List<PythonPackage>> {
-        TODO("Not yet implemented")
+        return when (val output = uv.list()) {
+            null -> Result.failure(UVReportedError())
+            else -> Result.success(output).also { installedPackages = output }
+        }
     }
     
-    override suspend fun uninstallPackage(pkg: PythonPackage): Result<List<PythonPackage>> {
-        TODO("Not yet implemented")
+    /**
+     * @see com.jetbrains.python.packaging.management.PythonPackageManager.refreshPaths
+     */
+    private suspend fun refreshPaths() {
+        writeAction {
+            VfsUtil.markDirtyAndRefresh(
+                /* async = */ true,
+                /* recursive = */ true,
+                /* reloadChildren = */ true,
+                /* ...files = */ *sdk.rootProvider.getFiles(OrderRootType.CLASSES)
+            )
+            PythonSdkUpdater.scheduleUpdate(sdk, project)
+        }
+    }
+    
+    private suspend fun refreshAndReload(): Result<List<PythonPackage>> {
+        refreshPaths()
+        return reloadPackages()
+    }
+    
+    override suspend fun installPackage(specification: PythonPackageSpecification): Result<List<PythonPackage>> {
+        return when (uv.add(specification)) {
+            false -> Result.failure(UVReportedError())
+            true -> refreshAndReload()
+        }
     }
     
     override suspend fun updatePackage(specification: PythonPackageSpecification): Result<List<PythonPackage>> {
-        TODO("Not yet implemented")
+        return when (uv.update(specification)) {
+            false -> Result.failure(UVReportedError())
+            true -> refreshAndReload()
+        }
+    }
+    
+    override suspend fun uninstallPackage(pkg: PythonPackage): Result<List<PythonPackage>> {
+        return when (uv.remove(pkg.name)) {
+            false -> Result.failure(UVReportedError())
+            true -> refreshAndReload()
+        }
     }
     
 }

@@ -26,7 +26,12 @@ private fun UVProjectGenerator.generateProject(settingsStep: UVProjectSettingsSt
 
 
 /**
- * @see com.intellij.pycharm.community.ide.impl.newProject.steps.PythonGenerateProjectCallback
+ * A reimplementation of `PythonGenerateProjectCallback`
+ * (an `impl` class, and thus unlinkable in KDoc)
+ * with many code paths removed or rewritten.
+ * 
+ * It is responsible for calling SDK-creating code
+ * as well as initializing Git repository if necessary.
  */
 internal class GenerateProjectCallback : AbstractCallback<Settings>() {
     

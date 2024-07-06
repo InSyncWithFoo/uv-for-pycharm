@@ -30,10 +30,15 @@ internal fun Notification.runThenNotify(project: Project, action: Notification.(
 }
 
 
-internal fun uvNotificationGroup(): NotificationGroup {
-    val groupManager = NotificationGroupManager.getInstance()
-    return groupManager.getNotificationGroup(ID)
-}
+internal fun NotificationGroup.createErrorNotification(title: String, content: String) =
+    createNotification(title, content, NotificationType.ERROR)
+
+
+internal val uvNotificationGroup: NotificationGroup
+    get() {
+        val groupManager = NotificationGroupManager.getInstance()
+        return groupManager.getNotificationGroup(ID)
+    }
 
 
 internal val Project.openingUVNotifications: List<Notification>
@@ -60,7 +65,3 @@ internal fun Project?.somethingIsWrong(title: String, message: String) {
 internal fun Project?.somethingIsWrong(message: String) {
     somethingIsWrong(message, project = this)
 }
-
-
-internal fun NotificationGroup.createErrorNotification(title: String, content: String) =
-    createNotification(title, content, NotificationType.ERROR)
