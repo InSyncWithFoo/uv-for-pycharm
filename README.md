@@ -8,6 +8,8 @@
 <!-- Plugin description -->
 [uv][1] integration for PyCharm.
 
+This plugin brings the various functionalities of uv closer to the IDE.
+
 
   [1]: https://github.com/astral-sh/uv
 <!-- Plugin description end -->

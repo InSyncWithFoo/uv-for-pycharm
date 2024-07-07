@@ -7,9 +7,12 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.projectRoots.impl.SdkConfigurationUtil
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.platform.ProjectGeneratorPeer
+import com.intellij.util.io.write
 import com.jetbrains.python.newProject.steps.PythonProjectSpecificSettingsStep
 import insyncwithfoo.uv.moduleManager
+import insyncwithfoo.uv.path
 import insyncwithfoo.uv.rootManager
+import kotlin.io.path.div
 
 
 private fun UVProjectGenerator.makeSettings(settingsStep: UVProjectSettingsStep) =
@@ -22,6 +25,26 @@ private fun UVProjectGenerator.makeSettings(settingsStep: UVProjectSettingsStep)
 private fun UVProjectGenerator.generateProject(settingsStep: UVProjectSettingsStep, settings: Settings) : Project? {
     val location = FileUtil.expandUserHome(settingsStep.projectLocation)
     return AbstractNewProjectStep.doGenerateProject(null, location, this, settings)
+}
+
+
+private fun Project.createPyProjectToml() {
+    val path = this.path!! / "pyproject.toml"
+    val content = """
+        [project]
+        name = "${this.name}"
+        version = "0.1.0"
+    """.trimIndent()
+    
+    path.write(content)
+}
+
+
+private fun Project.initializeGit() {
+    val module = moduleManager.modules.firstOrNull() ?: return
+    val moduleRoot = module.rootManager.contentRoots.firstOrNull() ?: return
+    
+    PythonProjectSpecificSettingsStep.initializeGit(this, moduleRoot)
 }
 
 
@@ -45,12 +68,10 @@ internal class GenerateProjectCallback : AbstractCallback<Settings>() {
         
         SdkConfigurationUtil.setDirectoryProjectSdk(newProject, sdk)
         
+        newProject.createPyProjectToml()
+        
         if (settingsStep.initializeGit.get()) {
-            val moduleManager = newProject.moduleManager
-            val module = moduleManager.modules.firstOrNull() ?: return
-            val moduleRoot = module.rootManager.contentRoots.firstOrNull() ?: return
-            
-            PythonProjectSpecificSettingsStep.initializeGit(newProject, moduleRoot)
+            newProject.initializeGit()
         }
     }
     

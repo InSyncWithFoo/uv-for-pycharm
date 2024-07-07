@@ -51,7 +51,7 @@
 		
 		<!--suppress PluginXmlValidity -->
 		<pythonPackageManagerProvider
-			id="uv"
+			id="insyncwithfoo.uv"
 			order="first"
 			implementation="insyncwithfoo.uv.UVPackageManagerProvider"
 		/>
