@@ -50,7 +50,7 @@ internal class VenvCreator(
         PySdkSettings.instance.onVirtualEnvCreated(baseSdk, venvRoot, projectPath.toString())
         
         runWriteAction { newSdk.sdkModificator.commitChanges() }
-        UV.savedExecutable = executable
+        UV.executable = executable
         
         return newSdk
     }

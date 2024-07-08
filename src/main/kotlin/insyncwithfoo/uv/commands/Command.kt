@@ -30,10 +30,12 @@ internal abstract class Command<Output> {
     
     abstract fun run(): Output
     
-    fun asCopyableString() = commandLine.commandLineString
+    private fun asCopyableString() = commandLine.commandLineString
     
-    protected fun runProcess(): ProcessOutput =
-        commandLine.handler.runProcess(timeout)
+    protected fun runProcess(): ProcessOutput {
+        LOGGER.info("Running: ${this.asCopyableString()}")
+        return commandLine.handler.runProcess(timeout)
+    }
     
     companion object {
         @JvmStatic

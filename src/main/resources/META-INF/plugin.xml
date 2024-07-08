@@ -51,9 +51,13 @@
 		
 		<!--suppress PluginXmlValidity -->
 		<pythonPackageManagerProvider
-			id="insyncwithfoo.uv"
 			order="first"
 			implementation="insyncwithfoo.uv.UVPackageManagerProvider"
+		/>
+		
+		<PythonPackagingToolwindowActionProvider
+			order="first"
+			implementation="insyncwithfoo.uv.UVPackagingToolwindowActionProvider"
 		/>
 	</extensions>
 </idea-plugin>

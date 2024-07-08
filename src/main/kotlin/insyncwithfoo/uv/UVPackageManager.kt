@@ -8,7 +8,6 @@ import com.intellij.openapi.vfs.VfsUtil
 import com.jetbrains.python.packaging.common.PythonPackage
 import com.jetbrains.python.packaging.common.PythonPackageSpecification
 import com.jetbrains.python.packaging.management.PythonPackageManager
-import com.jetbrains.python.packaging.management.PythonRepositoryManager
 import com.jetbrains.python.packaging.pip.PipRepositoryManager
 import com.jetbrains.python.sdk.PythonSdkUpdater
 import insyncwithfoo.uv.commands.UV
@@ -17,7 +16,7 @@ import insyncwithfoo.uv.commands.UVReportedError
 
 /**
  * This class's methods get called when corresponding functionalities
- * of the "Python packages" window are used.
+ * of the *Python Packages* toolwindow are used.
  */
 @Suppress("UnstableApiUsage")
 internal class UVPackageManager(project: Project, sdk: Sdk) : PythonPackageManager(project, sdk) {
@@ -27,8 +26,7 @@ internal class UVPackageManager(project: Project, sdk: Sdk) : PythonPackageManag
     override var installedPackages: List<PythonPackage> = emptyList()
         private set
     
-    override val repositoryManager: PythonRepositoryManager
-        get() = PipRepositoryManager(project, sdk)
+    override val repositoryManager by lazy { PipRepositoryManager(project, sdk) }
     
     override suspend fun reloadPackages(): Result<List<PythonPackage>> {
         return when (val output = uv.list()) {
@@ -42,11 +40,11 @@ internal class UVPackageManager(project: Project, sdk: Sdk) : PythonPackageManag
      */
     private suspend fun refreshPaths() {
         writeAction {
+            val (async, recursive, reloadChildren) = Triple(true, true, true)
+            
             VfsUtil.markDirtyAndRefresh(
-                /* async = */ true,
-                /* recursive = */ true,
-                /* reloadChildren = */ true,
-                /* ...files = */ *sdk.rootProvider.getFiles(OrderRootType.CLASSES)
+                async, recursive, reloadChildren,
+                *sdk.rootProvider.getFiles(OrderRootType.CLASSES)
             )
             PythonSdkUpdater.scheduleUpdate(sdk, project)
         }

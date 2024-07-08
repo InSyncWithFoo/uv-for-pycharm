@@ -21,7 +21,7 @@ Features:
   * [ ] From existing
   * [ ] Multiple modules
 * [ ] Package management
-  * [ ] Install and uninstall using the Python packages window
+  * [x] Install and uninstall using the <i>Python Packages</i> toolwindow
 * [ ] Intentions
   * [ ] Install quick fix
 
@@ -54,5 +54,5 @@ Some other files are based on or copied directly from
   [5]: https://www.jetbrains.com/help/pycharm/managing-plugins.html#install_plugin_from_disk
   [6]: https://github.com/koxudaxi/poetry-pycharm-plugin
   [7]: https://github.com/JetBrains/intellij-community
-  [8]: https://github.com/astral-sh/uv/blob/a80e4c88/docs/theme/favicon.svg
+  [8]: https://github.com/astral-sh/uv/blob/4f34058/docs/theme/favicon.svg
   [9]: https://github.com/JetBrains/intellij-platform-plugin-template

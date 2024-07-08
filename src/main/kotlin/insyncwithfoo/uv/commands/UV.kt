@@ -48,7 +48,7 @@ internal sealed class UV {
         @JvmStatic
         protected val LOGGER = Logger.getInstance(UV::class.java)
         
-        var savedExecutable by PropertiesComponent.getInstance()::uvExecutable
+        private var savedExecutable by PropertiesComponent.getInstance()::uvExecutable
         
         private fun detectExecutable(): Path? {
             val fileName = when {
@@ -59,8 +59,11 @@ internal sealed class UV {
             return PathEnvironmentVariableUtil.findInPath(fileName)?.toPath()
         }
         
-        fun savedOrDetectExecutable() =
-            savedExecutable ?: detectExecutable()
+        var executable: Path?
+            get() = savedExecutable ?: detectExecutable()
+            set(value) {
+                savedExecutable = value
+            }
         
         fun create(executable: Path): FreeUV {
             return FreeUV(executable)
@@ -75,15 +78,15 @@ internal sealed class UV {
         }
         
         fun createFree(): FreeUV? {
-            return savedOrDetectExecutable()?.let { create(it) }
+            return executable?.let { create(it) }
         }
         
         fun createLocked(projectPath: Path): LockedUV? {
-            return savedOrDetectExecutable()?.let { create(it, projectPath) }
+            return executable?.let { create(it, projectPath) }
         }
         
         fun createForProject(project: Project): ProjectUV? {
-            return savedOrDetectExecutable()?.let { create(it, project) }
+            return executable?.let { create(it, project) }
         }
         
     }

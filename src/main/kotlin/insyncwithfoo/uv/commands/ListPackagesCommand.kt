@@ -51,9 +51,14 @@ internal class ListPackagesCommand(
             return null
         }
         
+        LOGGER.info("Raw result: $output")
+        
+        val json = Json { ignoreUnknownKeys = true }
+        
         return try {
-            Json.decodeFromString(ListSerializer(PythonPackageDeserializer), output.stdout)
+            json.decodeFromString(ListSerializer(PythonPackageDeserializer), output.stdout)
         } catch (exception: SerializationException) {
+            LOGGER.error(exception)
             null
         }
     }

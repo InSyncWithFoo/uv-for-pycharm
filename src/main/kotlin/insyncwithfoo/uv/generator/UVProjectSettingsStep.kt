@@ -208,7 +208,7 @@ internal class UVProjectSettingsStep(projectGenerator: DirectoryProjectGenerator
                     makeFlexible()
                     bindText(uvExecutablePath)
                     
-                    uvExecutablePath.set(UV.savedOrDetectExecutable()?.toString() ?: "")
+                    uvExecutablePath.set(UV.executable?.toString() ?: "")
                 }
             }
             row("") {
