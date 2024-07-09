@@ -73,6 +73,7 @@ internal class UVProjectSettingsStep(projectGenerator: DirectoryProjectGenerator
     
     private val projectName = propertyGraph.property("")
     private val projectLocation = propertyGraph.property("")
+    
     private val projectPath: Path?
         get() = try {
             Path.of(projectLocation.get(), projectName.get())
@@ -92,6 +93,7 @@ internal class UVProjectSettingsStep(projectGenerator: DirectoryProjectGenerator
             }
         }
     }
+    
     private val projectPathIsValid = propertyGraph.property(false).apply {
         dependsOn(projectPathHint) {
             projectPathHint.get() == PyBundle.message("new.project.location.hint", projectPath)
@@ -99,16 +101,18 @@ internal class UVProjectSettingsStep(projectGenerator: DirectoryProjectGenerator
     }
     
     private val baseInterpreter = propertyGraph.property<PySdkComboBoxItem?>(null)
+    
     private val baseInterpreterIsValid = propertyGraph.property(false).apply {
         dependsOn(baseInterpreter) {
             baseInterpreter.get() != null
         }
     }
     
-    private val uvExecutablePath = propertyGraph.property("")
+    private val uvExecutable = propertyGraph.property("")
+    
     private val uvExecutablePathHint = propertyGraph.property("").apply {
-        dependsOn(uvExecutablePath) {
-            val path = uvExecutablePath.get().toPathOrNull()
+        dependsOn(uvExecutable) {
+            val path = uvExecutable.get().toPathOrNull()
             
             when {
                 path == null -> message("newProjectPanel.hint.invalidPath")
@@ -120,6 +124,7 @@ internal class UVProjectSettingsStep(projectGenerator: DirectoryProjectGenerator
             }
         }
     }
+    
     private val uvExecutablePathIsValid = propertyGraph.property(false).apply {
         dependsOn(uvExecutablePathHint) {
             uvExecutablePathHint.get() == message("newProjectPanel.hint.fileFound")
@@ -133,20 +138,25 @@ internal class UVProjectSettingsStep(projectGenerator: DirectoryProjectGenerator
     private lateinit var projectNameInput: JBTextField
     private var projectLocationInput by ::myLocationField
     private lateinit var baseInterpreterInput: PySdkPathChoosingComboBox
-    private lateinit var uvExecutablePathInput: TextFieldWithBrowseButton
+    private lateinit var uvExecutableInput: TextFieldWithBrowseButton
     
-    
-    private val projectDirectory by ::myProjectDirectory
-    private val createButton by ::actionButton
+    /**
+     * Generates a name for the new project (and its own directory).
+     */
+    private val nextProjectDirectory by ::myProjectDirectory
     
     private val venvCreator: VenvCreator
         get() = VenvCreator(
-            executable = uvExecutablePath.get().toPathOrNull()!!,
+            executable = uvExecutable.get().toPathOrNull()!!,
             projectPath = projectPath!!,
             baseSdk = baseInterpreterInput.selectedSdk!!
         )
     
-    
+    /**
+     * Whether the example "main.py" script should be created.
+     * 
+     * Always return `false` to reduce maintenance burden.
+     */
     override fun createWelcomeScript() = false
     
     override fun getProjectLocation() =
@@ -155,22 +165,27 @@ internal class UVProjectSettingsStep(projectGenerator: DirectoryProjectGenerator
     override fun getRemotePath() = null
     
     override fun createBasePanel(): JPanel {
-        val nextProjectName = projectDirectory.get()
-        projectName.set(nextProjectName.nameWithoutExtension)
-        projectLocation.set(nextProjectName.parent)
-        
         val panel = recreateProjectCreationPanel()
+        val properties = listOf(projectName, projectLocation, baseInterpreter, uvExecutable)
         
-        projectName.afterChange { toggleCreateButton() }
-        projectLocation.afterChange { toggleCreateButton() }
-        baseInterpreterInput.validate()
-        uvExecutablePath.afterChange { toggleCreateButton() }
-        
-        createButton.addActionListener { panel.apply() }
+        setNewProjectName()
+        actionButton.addActionListener { panel.apply() }
+        properties.forEach { it.afterChange { checkValid() } }
         
         return panel
     }
     
+    private fun setNewProjectName() {
+        val nextProjectName = nextProjectDirectory.get()
+        
+        projectName.set(nextProjectName.nameWithoutExtension)
+        projectLocation.set(nextProjectName.parent)
+    }
+    
+    /**
+     * @see com.jetbrains.python.newProject.steps.PythonProjectSpecificSettingsStep.createBasePanel
+     * @see com.jetbrains.python.sdk.add.v2.PythonAddNewEnvironmentPanel
+     */
     private fun recreateProjectCreationPanel() = panel {
         row(PyBundle.message("new.project.name")) {
             projectNameInput = textField().applyReturningComponent {
@@ -196,19 +211,20 @@ internal class UVProjectSettingsStep(projectGenerator: DirectoryProjectGenerator
         
         panel {
             rowWithTopGap(PySdkBundle.message("python.venv.base.label")) {
+                // TODO: Switch to com.jetbrains.python.sdk.add.v2.pythonInterpreterComboBox
                 baseInterpreterInput = cell(PySdkPathChoosingComboBox()).applyReturningComponent {
-                    component.addSystemWideInterpreters()
                     makeFlexible()
+                    component.addSystemWideInterpreters()
                     component.childComponent.bind(baseInterpreter)
                 }
             }
             
             row(message("newProjectPanel.settings.uvExecutable.label")) {
-                uvExecutablePathInput = singlePathTextField().applyReturningComponent {
+                uvExecutableInput = singlePathTextField().applyReturningComponent {
                     makeFlexible()
-                    bindText(uvExecutablePath)
+                    bindText(uvExecutable)
                     
-                    uvExecutablePath.set(UV.executable?.toString() ?: "")
+                    uvExecutable.set(UV.executable?.toString().orEmpty())
                 }
             }
             row("") {
@@ -217,26 +233,34 @@ internal class UVProjectSettingsStep(projectGenerator: DirectoryProjectGenerator
         }
     }
     
-    private fun toggleCreateButton() {
-        createButton.isEnabled = checkValid()
-    }
-    
+    /**
+     * Called by [createBasePanel] and various other functions elsewhere.
+     *
+     * Responsible for setting the error notice
+     * (at the bottom of the panel) if necessary.
+     */
     override fun checkValid(): Boolean {
-        return when {
-            !projectPathIsValid.get() ->
-                setErrorTextReturningValidity(IdeBundle.message("new.dir.project.error.invalid"))
-            !baseInterpreterIsValid.get() ->
-                setErrorTextReturningValidity(message("newProjectPanel.validation.noBaseInterpreter"))
-            !uvExecutablePathIsValid.get() ->
-                setErrorTextReturningValidity(message("newProjectPanel.validation.invalidUVExecutable"))
-            else ->
-                setErrorTextReturningValidity(null)
+        val text = when {
+            !projectPathIsValid.get() -> IdeBundle.message("new.dir.project.error.invalid")
+            !baseInterpreterIsValid.get() -> message("newProjectPanel.validation.noBaseInterpreter")
+            !uvExecutablePathIsValid.get() -> message("newProjectPanel.validation.invalidUVExecutable")
+            else -> null
         }
+        return setErrorTextReturningValidity(text)
     }
     
+    /**
+     * Gets called when the panel created by [createBasePanel] is selected.
+     *
+     * This deliberately does nothing.
+     * The super implementation just calls some validation code
+     * under a check which we will never pass.
+     */
     override fun onPanelSelected() {}
     
     /**
+     * Creates the virtual environment and returns the SDK derived from that.
+     *
      * @see com.jetbrains.python.sdk.add.v2.setupVirtualenv
      */
     override fun getSdk() = PyLazySdk("Uninitialized environment") {

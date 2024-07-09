@@ -15,9 +15,9 @@ import com.jetbrains.python.packaging.toolwindow.SimplePythonPackageInstallActio
 internal class UVPackagingToolwindowActionProvider : PythonPackagingToolwindowActionProvider {
     
     /**
-     * Returns possible actions (clinically, package versions popup)
-     * for the *Install* links in the *PyPI* section of
-     * the *Python Packages* toolwindow.
+     * Without this, the *Install* links in the *PyPI* section
+     * of the *Python Packages* toolwindow cease to be functional
+     * (no package versions popup, etc.).
      */
     @Suppress("UnstableApiUsage")
     override fun getInstallActions(

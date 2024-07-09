@@ -14,13 +14,14 @@ import org.jdom.Element
 @Suppress("UnstableApiUsage")
 internal class UVSdkProvider : PySdkProvider {
     
+    // TODO: Implement this
     override fun createEnvironmentAssociationFix(
         module: Module,
         sdk: Sdk,
         isPyCharm: Boolean,
         associatedModulePath: String?
     ): PyInterpreterInspectionQuickFixData? {
-        TODO("Not yet implemented")
+        return null
     }
     
     // TODO: Implement this
@@ -28,6 +29,7 @@ internal class UVSdkProvider : PySdkProvider {
         return null
     }
     
+    // TODO: Implement this
     override fun createNewEnvironmentPanel(
         project: Project?,
         module: Module?,

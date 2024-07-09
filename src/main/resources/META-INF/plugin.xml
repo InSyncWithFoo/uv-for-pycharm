@@ -31,6 +31,13 @@
 		
 		<!--<postStartupActivity implementation="insyncwithfoo.uv.ConfigurationLoader" order="last"/>-->
 		
+		<!--suppress PluginXmlCapitalization -->
+		<applicationConfigurable
+			groupId="tools"
+			displayName="uv"
+			instance="insyncwithfoo.uv.configurations.UVConfigurable"
+		/>
+		
 		<notificationGroup
 			displayType="STICKY_BALLOON"
 			id="uv notifications"

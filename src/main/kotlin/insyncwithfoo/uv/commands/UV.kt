@@ -1,24 +1,15 @@
 package insyncwithfoo.uv.commands
 
 import com.intellij.execution.configurations.PathEnvironmentVariableUtil
-import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.SystemInfo
 import com.jetbrains.python.packaging.common.PythonPackageSpecification
+import insyncwithfoo.uv.configurations.changeUVConfigurations
+import insyncwithfoo.uv.configurations.uvConfigurations
 import insyncwithfoo.uv.path
 import insyncwithfoo.uv.toPathOrNull
 import java.nio.file.Path
-
-
-private const val UV_EXECUTABLE_PATH = "insyncwithfoo.uv.executable"
-
-
-private var PropertiesComponent.uvExecutable: Path?
-    get() = getValue(UV_EXECUTABLE_PATH)?.toPathOrNull()
-    set(value) {
-        setValue(UV_EXECUTABLE_PATH, value.toString())
-    }
 
 
 /**
@@ -48,9 +39,16 @@ internal sealed class UV {
         @JvmStatic
         protected val LOGGER = Logger.getInstance(UV::class.java)
         
-        private var savedExecutable by PropertiesComponent.getInstance()::uvExecutable
+        var executable: Path?
+            get() = savedExecutable ?: detectExecutable()
+            set(value) {
+                changeUVConfigurations { executable = value.toString() }
+            }
         
-        private fun detectExecutable(): Path? {
+        private val savedExecutable: Path?
+            get() = uvConfigurations.executable?.toPathOrNull()
+        
+        fun detectExecutable(): Path? {
             val fileName = when {
                 SystemInfo.isWindows -> "uv.exe"
                 else -> "uv"
@@ -58,12 +56,6 @@ internal sealed class UV {
             
             return PathEnvironmentVariableUtil.findInPath(fileName)?.toPath()
         }
-        
-        var executable: Path?
-            get() = savedExecutable ?: detectExecutable()
-            set(value) {
-                savedExecutable = value
-            }
         
         fun create(executable: Path): FreeUV {
             return FreeUV(executable)
@@ -113,7 +105,7 @@ internal open class FreeUV(override val executable: Path) : UV() {
  */
 internal class LockedUV(executable: Path, override val workingDirectory: Path) : FreeUV(executable) {
     
-    fun createVenv(baseInterpreter: Path, name: String? = null): Boolean {
+    fun createVenv(baseInterpreter: Path, name: String? = null): Successful {
         val output = CreateVenvCommand(executable, workingDirectory, baseInterpreter, name).run()
         return output.checkSuccess(LOGGER)
     }
