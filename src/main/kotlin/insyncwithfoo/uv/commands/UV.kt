@@ -57,7 +57,7 @@ internal sealed class UV {
             return PathEnvironmentVariableUtil.findInPath(fileName)?.toPath()
         }
         
-        fun create(executable: Path): FreeUV {
+        private fun create(executable: Path): FreeUV {
             return FreeUV(executable)
         }
         

@@ -7,10 +7,17 @@ import com.intellij.openapi.projectRoots.Sdk
 import com.intellij.openapi.util.UserDataHolder
 import com.jetbrains.python.sdk.PyInterpreterInspectionQuickFixData
 import com.jetbrains.python.sdk.PySdkProvider
+import com.jetbrains.python.sdk.PythonSdkUtil
 import com.jetbrains.python.sdk.add.PyAddNewEnvPanel
 import org.jdom.Element
 
 
+/**
+ * Responsible for various actions that [PySdkProvider] supports.
+ * 
+ * The super class is theoretically deprecated/obsolete.
+ * Regardless, there have yet to be a clean replacement.
+ */
 @Suppress("UnstableApiUsage")
 internal class UVSdkProvider : PySdkProvider {
     
@@ -26,7 +33,12 @@ internal class UVSdkProvider : PySdkProvider {
     
     // TODO: Implement this
     override fun createInstallPackagesQuickFix(module: Module): LocalQuickFix? {
-        return null
+        val sdk = PythonSdkUtil.findPythonSdk(module) ?: return null
+        
+        return when {
+            sdk.isUV -> UVInstallQuickFix()
+            else -> null
+        }
     }
     
     // TODO: Implement this
