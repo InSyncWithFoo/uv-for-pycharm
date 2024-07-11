@@ -15,7 +15,7 @@ import org.jdom.Element
 /**
  * Responsible for various actions that [PySdkProvider] supports.
  * 
- * The super class is theoretically deprecated/obsolete.
+ * The interface is theoretically deprecated/obsolete.
  * Regardless, there have yet to be a clean replacement.
  */
 @Suppress("UnstableApiUsage")

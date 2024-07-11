@@ -10,7 +10,6 @@ import com.jetbrains.python.packaging.common.PythonPackageSpecification
 import com.jetbrains.python.packaging.management.PythonPackageManager
 import com.jetbrains.python.packaging.pip.PipRepositoryManager
 import com.jetbrains.python.sdk.PythonSdkUpdater
-import insyncwithfoo.uv.commands.UV
 import insyncwithfoo.uv.commands.UVReportedError
 
 
@@ -21,7 +20,7 @@ import insyncwithfoo.uv.commands.UVReportedError
 @Suppress("UnstableApiUsage")
 internal class UVPackageManager(project: Project, sdk: Sdk) : PythonPackageManager(project, sdk) {
     
-    private val uv by lazy { UV.createForProject(project)!! }
+    private val uv by lazy { project.uv!! }
     
     override var installedPackages: List<PythonPackage> = emptyList()
         private set

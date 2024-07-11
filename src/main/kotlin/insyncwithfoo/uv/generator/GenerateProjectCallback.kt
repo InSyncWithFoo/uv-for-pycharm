@@ -34,6 +34,7 @@ private fun Project.createPyProjectToml() {
         [project]
         name = "${this.name}"
         version = "0.1.0"
+        dependencies = []
     """.trimIndent()
     
     path.write(content)

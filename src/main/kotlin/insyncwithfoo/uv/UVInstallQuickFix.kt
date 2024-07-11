@@ -5,7 +5,6 @@ import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.project.Project
 import com.jetbrains.python.packaging.common.PythonPackageSpecification
 import com.jetbrains.python.packaging.common.PythonSimplePackageSpecification
-import insyncwithfoo.uv.commands.UV
 
 
 private typealias PackageName = String
@@ -23,9 +22,7 @@ internal class UVInstallQuickFix : LocalQuickFix {
     
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
         val packageName = descriptor.psiElement.text
-        val uv = UV.createForProject(project)
-        
-        uv?.add(packageName.toSpecification()) ?: return
+        project.uv?.add(packageName.toSpecification()) ?: return
     }
     
 }

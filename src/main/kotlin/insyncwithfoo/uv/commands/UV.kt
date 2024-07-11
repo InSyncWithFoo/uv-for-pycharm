@@ -137,4 +137,8 @@ internal class ProjectUV(executable: Path, private val project: Project) : FreeU
         return UpgradeCommand(executable, workingDirectory, specification).run()
     }
     
+    fun sync(): Successful {
+        return SyncCommand(executable, workingDirectory).run()
+    }
+    
 }

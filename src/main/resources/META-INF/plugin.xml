@@ -67,4 +67,15 @@
 			implementation="insyncwithfoo.uv.UVPackagingToolwindowActionProvider"
 		/>
 	</extensions>
+	
+	<actions>
+		<!--suppress PluginXmlCapitalization -->
+		<action
+			id="insyncwithfoo.uv.actions.PipSync"
+			class="insyncwithfoo.uv.actions.PipSync"
+			text="uv: Sync"
+			description="Run &quot;uv pip sync&quot; for this project"
+			icon="AllIcons.Actions.Refresh"
+		/>
+	</actions>
 </idea-plugin>

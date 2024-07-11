@@ -9,6 +9,8 @@ import com.intellij.platform.ide.progress.ModalTaskOwner
 import com.intellij.platform.ide.progress.TaskCancellation
 import com.intellij.platform.ide.progress.withBackgroundProgress
 import com.intellij.platform.ide.progress.withModalProgress
+import insyncwithfoo.uv.commands.ProjectUV
+import insyncwithfoo.uv.commands.UV
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
 import java.nio.file.Path
@@ -22,24 +24,28 @@ private val Project.modules: Array<Module>
     get() = moduleManager.modules
 
 
-private val Project.sdk: Sdk?
-    get() = ProjectRootManager.getInstance(this).projectSdk
-
-
 private val Project.modalTaskOwner: ModalTaskOwner
     get() = ModalTaskOwner.project(this)
 
 
-internal val Project.moduleManager: ModuleManager
-    get() = ModuleManager.getInstance(this)
+internal val Project.uv: ProjectUV?
+    get() = UV.createForProject(this)
 
 
 internal val Project.path: Path?
     get() = basePath?.let { Path.of(it) }
 
 
+internal val Project.sdk: Sdk?
+    get() = ProjectRootManager.getInstance(this).projectSdk
+
+
 internal val Project.interpreterPath: Path?
     get() = sdk?.homePath?.let { Path.of(it) }
+
+
+internal val Project.moduleManager: ModuleManager
+    get() = ModuleManager.getInstance(this)
 
 
 internal val Project.isNormal: Boolean
