@@ -28,6 +28,7 @@ private fun UVProjectGenerator.generateProject(settingsStep: UVProjectSettingsSt
 }
 
 
+// TODO: Use `uv init` instead
 private fun Project.createPyProjectToml() {
     val path = this.path!! / "pyproject.toml"
     val content = """

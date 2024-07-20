@@ -16,24 +16,25 @@ internal class PipSync : DumbAwareAction() {
     override fun actionPerformed(event: AnActionEvent) {
         val project = event.project ?: return noProjectFound()
         
-        runSyncCommand(project)
-        reloadPackages(project)
+        project.runSyncCommand()
+        project.reloadPackages()
     }
     
-    private fun runSyncCommand(project: Project) {
-        val uv = project.uv ?: return noExecutableFound()
+    private fun Project.runSyncCommand() {
+        val uv = uv ?: return noExecutableFound()
         
-        project.runInBackground("Synchronizing...") {
+        runInBackground("Synchronizing...") {
             uv.sync()
         }
     }
     
     @Suppress("UnstableApiUsage")
-    private fun reloadPackages(project: Project) {
-        val sdk = project.sdk ?: return
+    private fun Project.reloadPackages() {
+        val sdk = this.sdk ?: return
+        val uvPackageManager = PythonPackageManager.forSdk(this, sdk)
         
-        project.runInBackground("Reload packages") {
-            PythonPackageManager.forSdk(project, sdk).reloadPackages()
+        runInBackground("Reload packages") {
+            uvPackageManager.reloadPackages()
         }
     }
     
