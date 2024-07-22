@@ -46,6 +46,11 @@
 		<directoryProjectGenerator
 			implementation="insyncwithfoo.uv.generator.UVProjectGenerator"
 		/>
+		
+		<intentionAction>
+			<language>Python</language>
+			<className>insyncwithfoo.uv.intentions.UVSyncFromPyProjectToml</className>
+		</intentionAction>
 	</extensions>
 	
 	<extensions defaultExtensionNs="Pythonid">
@@ -71,8 +76,8 @@
 	<actions>
 		<!--suppress PluginXmlCapitalization -->
 		<action
-			id="insyncwithfoo.uv.actions.PipSync"
-			class="insyncwithfoo.uv.actions.PipSync"
+			id="insyncwithfoo.uv.actions.UVSync"
+			class="insyncwithfoo.uv.actions.UVSync"
 			text="uv: Sync"
 			description="Run &quot;uv pip sync&quot; for this project"
 			icon="AllIcons.Actions.Refresh"
