@@ -24,8 +24,7 @@ import kotlin.io.path.name
 internal class VenvCreator(
     private val executable: Path,
     private val projectPath: Path,
-    private val baseSdk: Sdk,
-    private val directoryName: String = ".venv"
+    private val baseSdk: Sdk
 ) {
     
     private val suggestedName: String
@@ -34,8 +33,14 @@ internal class VenvCreator(
             return "$pythonAndVersion [uv] (${projectPath.name})"
         }
     
+    /**
+     * Expected to be set by [createVenv]
+     * once the virtual environment is created.
+     */
+    private lateinit var venvDirectoryName: String
+    
     private val venvRoot: Path
-        get() = projectPath / directoryName
+        get() = projectPath / venvDirectoryName
     
     /**
      * @see com.jetbrains.python.sdk.configuration.createVirtualEnvSynchronously
@@ -99,10 +104,9 @@ internal class VenvCreator(
         val baseInterpreterPath = baseSdk.homePath!!.toPathOrNull()!!
         val uv = UV.create(executable, projectPath)
         
-        val successful = uv.createVenv(baseInterpreterPath, directoryName)
-        
-        if (!successful) {
-            somethingIsWrong("uv reported an error. See the logs for details.")
+        when (val newVenvName = uv.createVenv(baseInterpreterPath)) {
+            null -> somethingIsWrong("uv reported an error. See the logs for details.")
+            else -> venvDirectoryName = newVenvName
         }
     }
     

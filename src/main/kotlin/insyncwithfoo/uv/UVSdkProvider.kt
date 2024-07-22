@@ -21,7 +21,7 @@ import org.jdom.Element
 @Suppress("UnstableApiUsage")
 internal class UVSdkProvider : PySdkProvider {
     
-    // TODO: Implement this
+    // TODO: Find out whether this actually works
     override fun createEnvironmentAssociationFix(
         module: Module,
         sdk: Sdk,
@@ -31,7 +31,7 @@ internal class UVSdkProvider : PySdkProvider {
         return null
     }
     
-    // TODO: Implement this
+    // TODO: Find out whether this actually works
     override fun createInstallPackagesQuickFix(module: Module): LocalQuickFix? {
         val sdk = PythonSdkUtil.findPythonSdk(module) ?: return null
         
@@ -41,7 +41,7 @@ internal class UVSdkProvider : PySdkProvider {
         }
     }
     
-    // TODO: Implement this
+    // TODO: Find out whether this actually works
     override fun createNewEnvironmentPanel(
         project: Project?,
         module: Module?,

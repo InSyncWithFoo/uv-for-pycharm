@@ -15,7 +15,7 @@ internal object UVSdkFlavor : CPythonSdkFlavor<PyFlavorData.Empty>() {
      * **Settings** | **Project** | **Python Interpreter**.
      * 
      * Also used by [UVSdkProvider.getSdkIcon].
-     *
+     * 
      * Size: 16x16
      */
     override fun getIcon() = UVIcon.TINY

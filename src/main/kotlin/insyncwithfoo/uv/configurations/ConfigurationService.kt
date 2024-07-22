@@ -8,7 +8,10 @@ import com.intellij.openapi.components.Storage
 import com.intellij.openapi.components.service
 
 
-@State(name = "ApplicationConfigurations", storages = [Storage("uv.xml", roamingType = RoamingType.LOCAL)])
+@State(
+    name = "insyncwithfoo.uv.ApplicationConfigurations",
+    storages = [Storage("uv.xml", roamingType = RoamingType.LOCAL)]
+)
 @Service(Service.Level.APP)
 internal class ConfigurationService : SimplePersistentStateComponent<Configurations>(Configurations()) {
     

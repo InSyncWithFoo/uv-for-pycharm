@@ -32,7 +32,7 @@ private fun Project.initializeUsingUV() {
 }
 
 
-private fun Project.initializeGit() {
+private fun Project.initializeGitRepository() {
     val module = moduleManager.modules.firstOrNull() ?: return
     val moduleRoot = module.rootManager.contentRoots.firstOrNull() ?: return
     
@@ -63,7 +63,7 @@ internal class GenerateProjectCallback : AbstractCallback<Settings>() {
         newProject.initializeUsingUV()
         
         if (settingsStep.initializeGit.get()) {
-            newProject.initializeGit()
+            newProject.initializeGitRepository()
         }
     }
     

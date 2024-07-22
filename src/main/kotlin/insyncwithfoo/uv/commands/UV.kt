@@ -105,9 +105,15 @@ internal open class FreeUV(override val executable: Path) : UV() {
  */
 internal class LockedUV(executable: Path, override val workingDirectory: Path) : FreeUV(executable) {
     
-    fun createVenv(baseInterpreter: Path, name: String? = null): Successful {
+    fun createVenv(baseInterpreter: Path, name: String? = null): VenvName? {
+        val venvName = """(?<=Creating virtualenv at: ).+""".toRegex()
         val output = VenvCommand(executable, workingDirectory, baseInterpreter, name).run()
-        return output.checkSuccess(LOGGER)
+        
+        if (!output.checkSuccess(LOGGER)) {
+            return null
+        }
+        
+        return venvName.find(output.stdout)!!.value
     }
     
 }
