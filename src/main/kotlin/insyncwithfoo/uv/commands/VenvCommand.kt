@@ -4,7 +4,7 @@ import com.intellij.execution.process.ProcessOutput
 import java.nio.file.Path
 
 
-internal class CreateVenvCommand(
+internal class VenvCommand(
     override val executable: Path,
     override val workingDirectory: Path,
     private val baseInterpreter: Path,

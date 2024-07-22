@@ -33,7 +33,7 @@ private object PythonPackageDeserializer : KSerializer<PythonPackage> {
 }
 
 
-internal class ListPackagesCommand(
+internal class PipListCommand(
     override val executable: Path,
     override val workingDirectory: Path
 ) : Command<InstalledPackages?>() {

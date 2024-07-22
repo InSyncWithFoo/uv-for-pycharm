@@ -106,7 +106,7 @@ internal open class FreeUV(override val executable: Path) : UV() {
 internal class LockedUV(executable: Path, override val workingDirectory: Path) : FreeUV(executable) {
     
     fun createVenv(baseInterpreter: Path, name: String? = null): Successful {
-        val output = CreateVenvCommand(executable, workingDirectory, baseInterpreter, name).run()
+        val output = VenvCommand(executable, workingDirectory, baseInterpreter, name).run()
         return output.checkSuccess(LOGGER)
     }
     
@@ -130,7 +130,7 @@ internal class ProjectUV(executable: Path, private val project: Project) : FreeU
     }
     
     fun list(): InstalledPackages? {
-        return ListPackagesCommand(executable, workingDirectory).run()
+        return PipListCommand(executable, workingDirectory).run()
     }
     
     fun update(specification: PythonPackageSpecification): Successful {
@@ -139,6 +139,10 @@ internal class ProjectUV(executable: Path, private val project: Project) : FreeU
     
     fun sync(): Successful {
         return SyncCommand(executable, workingDirectory).run()
+    }
+    
+    fun init(): Successful {
+        return InitCommand(executable, workingDirectory).run()
     }
     
 }

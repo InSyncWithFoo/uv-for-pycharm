@@ -7,12 +7,10 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.projectRoots.impl.SdkConfigurationUtil
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.platform.ProjectGeneratorPeer
-import com.intellij.util.io.write
 import com.jetbrains.python.newProject.steps.PythonProjectSpecificSettingsStep
 import insyncwithfoo.uv.moduleManager
-import insyncwithfoo.uv.path
 import insyncwithfoo.uv.rootManager
-import kotlin.io.path.div
+import insyncwithfoo.uv.uv
 
 
 private fun UVProjectGenerator.makeSettings(settingsStep: UVProjectSettingsStep) =
@@ -29,16 +27,8 @@ private fun UVProjectGenerator.generateProject(settingsStep: UVProjectSettingsSt
 
 
 // TODO: Use `uv init` instead
-private fun Project.createPyProjectToml() {
-    val path = this.path!! / "pyproject.toml"
-    val content = """
-        [project]
-        name = "${this.name}"
-        version = "0.1.0"
-        dependencies = []
-    """.trimIndent()
-    
-    path.write(content)
+private fun Project.initializeUsingUV() {
+    this.uv!!.init()
 }
 
 
@@ -70,7 +60,7 @@ internal class GenerateProjectCallback : AbstractCallback<Settings>() {
         
         SdkConfigurationUtil.setDirectoryProjectSdk(newProject, sdk)
         
-        newProject.createPyProjectToml()
+        newProject.initializeUsingUV()
         
         if (settingsStep.initializeGit.get()) {
             newProject.initializeGit()
