@@ -14,17 +14,6 @@ This plugin brings the various functionalities of uv closer to your IDE.
   [1]: https://github.com/astral-sh/uv
 <!-- Plugin description end -->
 
-Features:
-
-* [ ] Create new projects
-  * [x] From scratch
-  * [ ] From existing
-  * [ ] Multiple modules
-* [ ] Package management
-  * [x] Install and uninstall using the <i>Python Packages</i> toolwindow
-* [ ] Intentions
-  * [ ] Install quick fix
-
 Disclaimer: This is not an official Astral project.
 
 

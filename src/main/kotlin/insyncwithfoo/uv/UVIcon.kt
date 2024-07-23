@@ -12,4 +12,6 @@ internal object UVIcon {
     val MEDIUM by lazy { loadIcon("icons/medium.svg") }
     val SMALL by lazy { loadIcon("icons/small.svg") }
     val TINY by lazy { loadIcon("icons/tiny.svg") }
+    
+    val TINY_SIMPLIFIED_WHITE by lazy { loadIcon("icons/tiny-simplified-white.svg") }
 }

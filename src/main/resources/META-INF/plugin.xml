@@ -47,6 +47,10 @@
 			implementation="insyncwithfoo.uv.generator.UVProjectGenerator"
 		/>
 		
+		<editorNotificationProvider
+			implementation="insyncwithfoo.uv.inspections.UVLockEditingNotice"
+		/>
+		
 		<intentionAction>
 			<language>Python</language>
 			<className>insyncwithfoo.uv.intentions.UVSyncFromFiles</className>

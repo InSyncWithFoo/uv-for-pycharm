@@ -10,7 +10,7 @@
 	<g>
 		<g>
 			<path
-				style="fill: none; stroke: #fefefe; stroke-width: 5%;"
+				style="fill: #fefefe;"
 				d="M 65,65 h80 v130 h40 v-130 h80 v180 a20,20 0 0 1 -20,20 h-160 a20,20 0 0 1 -20,-20 z"
 			/>
 		</g>

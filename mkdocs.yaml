@@ -63,8 +63,9 @@ nav:
   - Overview: index.md
   - Generating new project: generating.md
   - Managing packages: managing.md
-  - Actions: actions.md
+  - Inspections: inspections.md
   - Intentions: intentions.md
+  - Actions: actions.md
   - FAQ: faq.md
 
 validation:
