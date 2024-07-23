@@ -45,7 +45,7 @@ internal fun Project.syncThenReload() {
 }
 
 
-internal class UVSyncFromPyProjectToml : PyBaseIntentionAction() {
+internal class UVSyncFromFiles : PyBaseIntentionAction() {
     
     override fun startInWriteAction() = true
     
@@ -54,7 +54,8 @@ internal class UVSyncFromPyProjectToml : PyBaseIntentionAction() {
     override fun getText() = familyName
     
     override fun isAvailable(project: Project, editor: Editor?, file: PsiFile?): Boolean {
-        return file?.virtualFile?.name == "pyproject.toml"
+        val fileName = file?.virtualFile?.name
+        return fileName == "pyproject.toml" || fileName == "uv.lock"
     }
     
     override fun doInvoke(project: Project, editor: Editor?, file: PsiFile?) {

@@ -16,7 +16,7 @@ internal class RemoveCommand(
         get() = "Removing $target..."
     
     override fun run(): Successful {
-        return runProcess().checkSuccess(LOGGER)
+        return runAndLogProcess().checkSuccess(LOGGER)
     }
     
 }

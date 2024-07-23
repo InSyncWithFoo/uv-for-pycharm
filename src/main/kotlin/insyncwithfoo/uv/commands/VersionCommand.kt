@@ -9,7 +9,7 @@ internal class VersionCommand(override val executable: Path) : Command<Version>(
         get() = listOf("version")
     
     override fun run(): Version {
-        return runProcess().stdout
+        return runAndLogProcess().stdout
     }
     
 }

@@ -18,7 +18,7 @@ internal class VenvCommand(
         )
     
     override fun run(): ProcessOutput {
-        return runProcess()
+        return runAndLogProcess()
     }
     
 }

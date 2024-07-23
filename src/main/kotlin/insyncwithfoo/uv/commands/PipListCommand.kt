@@ -45,7 +45,7 @@ internal class PipListCommand(
         )
     
     override fun run(): InstalledPackages? {
-        val output = runProcess()
+        val output = runAndLogProcess()
         
         if (!output.checkSuccess(LOGGER)) {
             return null

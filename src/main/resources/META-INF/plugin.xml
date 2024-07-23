@@ -49,7 +49,7 @@
 		
 		<intentionAction>
 			<language>Python</language>
-			<className>insyncwithfoo.uv.intentions.UVSyncFromPyProjectToml</className>
+			<className>insyncwithfoo.uv.intentions.UVSyncFromFiles</className>
 		</intentionAction>
 	</extensions>
 	

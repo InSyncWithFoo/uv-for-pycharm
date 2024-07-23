@@ -17,7 +17,7 @@ internal open class AddCommand(
         get() = "Adding ${target}..."
     
     override fun run(): Successful {
-        return runProcess().checkSuccess(LOGGER)
+        return runAndLogProcess().checkSuccess(LOGGER)
     }
     
 }

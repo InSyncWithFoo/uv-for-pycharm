@@ -4,11 +4,32 @@ import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.CapturingProcessHandler
 import com.intellij.execution.process.ProcessOutput
 import com.intellij.openapi.diagnostic.Logger
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.nio.file.Path
 
 
 private val GeneralCommandLine.handler: CapturingProcessHandler
     get() = CapturingProcessHandler(this)
+
+
+@Suppress("unused")
+@Serializable
+private class ProcessOutputSurrogate (
+    val stdout: String,
+    val stderr: String,
+    val exitCode: Int,
+    val isTimeout: Boolean,
+    val isCancelled: Boolean
+) {
+    override fun toString() = Json.encodeToString(this)
+}
+
+
+private fun ProcessOutputSurrogate(processOutput: ProcessOutput) = with(processOutput) {
+    ProcessOutputSurrogate(stdout, stderr, exitCode, isTimeout, isCancelled)
+}
 
 
 internal abstract class Command<Output> {
@@ -30,12 +51,14 @@ internal abstract class Command<Output> {
     
     abstract fun run(): Output
     
-    private fun asCopyableString() = commandLine.commandLineString
+    override fun toString() = commandLine.commandLineString
     
-    protected fun runProcess(): ProcessOutput {
-        LOGGER.info("Running: ${this.asCopyableString()}")
-        return commandLine.handler.runProcess(timeout)
+    protected fun runAndLogProcess(): ProcessOutput {
+        LOGGER.info("Running: $this")
+        return runProcess().also { LOGGER.info("Output: ${ProcessOutputSurrogate(it)}") }
     }
+    
+    private fun runProcess() = commandLine.handler.runProcess(timeout)
     
     companion object {
         @JvmStatic
