@@ -1,0 +1,75 @@
+site_name: uv for PyCharm
+site_description: Brings uv's various functionalities closer to PyCharm
+site_url: https://insyncwithfoo.github.io/uv-for-pycharm
+
+repo_name: InSyncWithFoo/uv-for-pycharm
+repo_url: https://github.com/InSyncWithFoo/uv-for-pycharm
+
+edit_uri: blob/master/docs/
+
+exclude_docs: |
+  /requirements.txt
+
+theme:
+  name: material
+  favicon: assets/icon.svg
+  logo: assets/icon-outline.svg
+  palette:
+    -
+      media: "(prefers-color-scheme: light)"
+      scheme: astral-light
+      toggle:
+        icon: octicons/sun-16
+        name: "Switch to dark mode"
+    -
+      media: "(prefers-color-scheme: dark)"
+      scheme: astral-dark
+      toggle:
+        icon: octicons/moon-16
+        name: "Switch to light mode"
+  features:
+    - content.action.edit
+    - content.action.view
+    - search.suggest
+
+markdown_extensions:
+  admonition:
+  codehilite:
+  pymdownx.details:
+  pymdownx.tabbed:
+    alternate_style: true
+    combine_header_slug: true
+    slugify: !!python/object/apply:pymdownx.slugs.slugify
+      kwds:
+        case: lower
+  pymdownx.smartsymbols:
+    arrows: true
+    care_of: false
+    copyright: false
+    fractions: false
+    notequal: false
+    ordinal_numbers: false
+    plusminus: false
+    registered: false
+    trademark: false
+  pymdownx.superfences:
+  toc:
+    permalink: '#'
+
+extra_css:
+  - stylesheets/extra.css
+
+nav:
+  - Overview: index.md
+  - Generating new project: generating.md
+  - Managing packages: managing.md
+  - Actions: actions.md
+  - Intentions: intentions.md
+  - FAQ: faq.md
+
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+
+strict: true
