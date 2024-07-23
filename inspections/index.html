@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://insyncwithfoo.github.io/uv-for-pycharm/managing/">
+        <link rel="canonical" href="https://insyncwithfoo.github.io/uv-for-pycharm/inspections/">
       
       
-        <link rel="prev" href="../generating/">
+        <link rel="prev" href="../managing/">
       
       
-        <link rel="next" href="../inspections/">
+        <link rel="next" href="../intentions/">
       
       
       <link rel="icon" href="../assets/icon.svg">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Managing packages - uv for PyCharm</title>
+        <title>Inspections - uv for PyCharm</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#install" class="md-skip">
+        <a href="#uvlock-should-not-be-edited-manually" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Managing packages
+              Inspections
             
           </span>
         </div>
@@ -294,6 +294,26 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../managing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Managing packages
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -308,7 +328,7 @@
           
   
   <span class="md-ellipsis">
-    Managing packages
+    Inspections
   </span>
   
 
@@ -319,7 +339,7 @@
         
   
   <span class="md-ellipsis">
-    Managing packages
+    Inspections
   </span>
   
 
@@ -339,27 +359,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install" class="md-nav__link">
+  <a href="#uvlock-should-not-be-edited-manually" class="md-nav__link">
     <span class="md-ellipsis">
-      Install
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
-    <span class="md-ellipsis">
-      Upgrade
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
-    <span class="md-ellipsis">
-      Uninstall
+      uv.lock should not be edited manually
     </span>
   </a>
   
@@ -369,26 +371,6 @@
   
 </nav>
       
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../inspections/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Inspections
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -478,27 +460,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install" class="md-nav__link">
+  <a href="#uvlock-should-not-be-edited-manually" class="md-nav__link">
     <span class="md-ellipsis">
-      Install
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
-    <span class="md-ellipsis">
-      Upgrade
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
-    <span class="md-ellipsis">
-      Uninstall
+      uv.lock should not be edited manually
     </span>
   </a>
   
@@ -519,7 +483,7 @@
                   
 
   
-    <a href="https://github.com/InSyncWithFoo/uv-for-pycharm/blob/master/docs/managing.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/InSyncWithFoo/uv-for-pycharm/blob/master/docs/inspections.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
     </a>
@@ -528,24 +492,17 @@
     
       
     
-    <a href="https://github.com/InSyncWithFoo/uv-for-pycharm/raw/master/docs/managing.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/InSyncWithFoo/uv-for-pycharm/raw/master/docs/inspections.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
     </a>
   
 
 
-  <h1>Managing packages</h1>
+  <h1>Inspections</h1>
 
-<p>When you use the <i>Python Packages</i> toolwindow,
-install, uninstall and upgrade operations will invoke
-<code>uv</code>'s corresponding commands instead of <code>pip</code>'s.</p>
-<h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">#</a></h2>
-<p>Invokes <code>uv add &lt;package&gt;</code>.</p>
-<h2 id="upgrade">Upgrade<a class="headerlink" href="#upgrade" title="Permanent link">#</a></h2>
-<p>Invokes <code>uv add &lt;package&gt; --upgrade</code>.</p>
-<h2 id="uninstall">Uninstall<a class="headerlink" href="#uninstall" title="Permanent link">#</a></h2>
-<p>Invokes <code>uv remove &lt;package&gt;</code>.</p>
+<h2 id="uvlock-should-not-be-edited-manually"><code>uv.lock</code> should not be edited manually<a class="headerlink" href="#uvlock-should-not-be-edited-manually" title="Permanent link">#</a></h2>
+<p>Shows an editor-level notice when <code>uv.lock</code> is edited.</p>
 
 
 

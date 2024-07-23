@@ -21,6 +21,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://insyncwithfoo.github.io/uv-for-pycharm/inspections/</loc>
+         <lastmod>2024-07-23</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://insyncwithfoo.github.io/uv-for-pycharm/intentions/</loc>
          <lastmod>2024-07-23</lastmod>
          <changefreq>daily</changefreq>
