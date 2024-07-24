@@ -113,7 +113,7 @@ internal class LockedUV(executable: Path, override val workingDirectory: Path) :
             return null
         }
         
-        return venvName.find(output.stdout)!!.value
+        return venvName.find(output.stderr)!!.value
     }
     
 }

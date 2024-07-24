@@ -47,6 +47,12 @@
 			implementation="insyncwithfoo.uv.generator.UVProjectGenerator"
 		/>
 		
+		<fileType
+			name="TOML"
+			fileNames="uv.lock"
+			fileNamesCaseInsensitive="false"
+		/>
+		
 		<editorNotificationProvider
 			implementation="insyncwithfoo.uv.inspections.UVLockEditingNotice"
 		/>
