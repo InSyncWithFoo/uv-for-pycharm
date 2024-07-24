@@ -6,6 +6,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.projectRoots.Sdk
 import com.intellij.openapi.projectRoots.impl.SdkConfigurationUtil
 import com.intellij.openapi.vfs.StandardFileSystems
+import com.intellij.openapi.vfs.VirtualFile
 import com.jetbrains.python.sdk.PySdkSettings
 import com.jetbrains.python.sdk.PythonSdkType
 import com.jetbrains.python.sdk.PythonSdkUtil
@@ -27,6 +28,9 @@ internal class VenvCreator(
     private val baseSdk: Sdk
 ) {
     
+    /**
+     * Example: "Python 3.12 &#91;uv&#93; (my-project)"
+     */
     private val suggestedName: String
         get() {
             val pythonAndVersion = PythonSdkType.suggestBaseSdkName(baseSdk.homePath!!)
@@ -64,12 +68,11 @@ internal class VenvCreator(
      * @see com.jetbrains.python.sdk.createSdkByGenerateTask
      */
     private fun createAndSetUpSdk(): Sdk? {
-        val interpreterPath = createVenvAndReturnInterpreterPath()
-        val interpreterVirtualFile = StandardFileSystems.local().refreshAndFindFileByPath(interpreterPath)!!
+        createVenvSynchronously()
         
         return SdkConfigurationUtil.setupSdk(
             emptyList<Sdk>().toTypedArray(),
-            interpreterVirtualFile,
+            findNewlyCreatedInterpreter(),
             PythonSdkType.getInstance(),
             false,
             UVSdkAdditionalData(),
@@ -80,24 +83,30 @@ internal class VenvCreator(
     /**
      * @see com.jetbrains.python.packaging.PyTargetEnvironmentPackageManager.createVirtualEnv
      */
-    private fun createVenvAndReturnInterpreterPath(): String {
-        // TODO: Use runWithModalProgressBlocking instead.
-        @Suppress("DialogTitleCapitalization", "UsagesOfObsoleteApi")
-        ProgressManager.getInstance().runProcessWithProgressSynchronously(
-            { createVenv() },
-            message("newProjectPanel.progress.creatingVenv"),
-            false,
-            null
-        )
-        
+    private fun findNewlyCreatedInterpreter(): VirtualFile {
         val interpreterPath = PythonSdkUtil.getPythonExecutable(venvRoot.toString())
         
         if (interpreterPath == null) {
-            somethingIsWrong("Cannot create virtual environment. See the logs for details.")
+            somethingIsWrong(message("messages.cannotCreateVenv.body"))
             error("Cannot create virtual environment at $venvRoot using $executable.")
         }
         
-        return interpreterPath
+        return StandardFileSystems.local().refreshAndFindFileByPath(interpreterPath)!!
+    }
+    
+    /**
+     * @see com.jetbrains.python.packaging.PyTargetEnvironmentPackageManager.createVirtualEnv
+     */
+    @Suppress("DialogTitleCapitalization")
+    private fun createVenvSynchronously() {
+        val (canBeCanceled, project) = Pair(false, null)
+        
+        // TODO: Use runWithModalProgressBlocking instead.
+        ProgressManager.getInstance().runProcessWithProgressSynchronously(
+            { createVenv() },
+            message("progresses.title.venv"),
+            canBeCanceled, project
+        )
     }
     
     private fun createVenv() {
@@ -105,7 +114,7 @@ internal class VenvCreator(
         val uv = UV.create(executable, projectPath)
         
         when (val newVenvName = uv.createVenv(baseInterpreterPath)) {
-            null -> somethingIsWrong("uv reported an error. See the logs for details.")
+            null -> somethingIsWrong(message("messages.uvReportedError.body"))
             else -> venvDirectoryName = newVenvName
         }
     }

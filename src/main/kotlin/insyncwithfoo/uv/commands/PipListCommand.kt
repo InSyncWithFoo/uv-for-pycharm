@@ -2,6 +2,7 @@ package insyncwithfoo.uv.commands
 
 import com.jetbrains.python.packaging.common.PythonPackage
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -12,22 +13,33 @@ import kotlinx.serialization.json.Json
 import java.nio.file.Path
 
 
+private fun PythonPackage(surrogate: PythonPackageSurrogate) =
+    with(surrogate) { PythonPackage(name, version) }
+
+
 @Serializable
-private class PythonPackageSurrogate(val name: String, val version: String)
+private class PythonPackageSurrogate(
+    val name: String,
+    val version: String,
+    @SerialName("editable_project_location")
+    val editableProjectLocation: String? = null
+) {
+    val isNotEditable: Boolean
+        get() = editableProjectLocation == null
+}
 
 
-private object PythonPackageDeserializer : KSerializer<PythonPackage> {
+private object PythonPackageSurrogateDeserializer : KSerializer<PythonPackageSurrogate> {
     
     override val descriptor: SerialDescriptor
         get() = PythonPackageSurrogate.serializer().descriptor
     
-    override fun serialize(encoder: Encoder, value: PythonPackage) {
+    override fun serialize(encoder: Encoder, value: PythonPackageSurrogate) {
         throw NotImplementedError("The serializer should not be used")
     }
     
-    override fun deserialize(decoder: Decoder): PythonPackage {
-        val surrogate = decoder.decodeSerializableValue(PythonPackageSurrogate.serializer())
-        return with(surrogate) { PythonPackage(name, version) }
+    override fun deserialize(decoder: Decoder): PythonPackageSurrogate {
+        return decoder.decodeSerializableValue(PythonPackageSurrogate.serializer())
     }
     
 }
@@ -51,16 +63,19 @@ internal class PipListCommand(
             return null
         }
         
-        LOGGER.info("Raw result: $output")
-        
-        val json = Json { ignoreUnknownKeys = true }
-        
         return try {
-            json.decodeFromString(ListSerializer(PythonPackageDeserializer), output.stdout)
+            parse(output.stdout).mapNotNull { surrogate ->
+                PythonPackage(surrogate).takeIf { surrogate.isNotEditable }
+            }
         } catch (exception: SerializationException) {
             LOGGER.error(exception)
             null
         }
+    }
+    
+    private fun parse(stdout: String): List<PythonPackageSurrogate> {
+        val json = Json { ignoreUnknownKeys = true }
+        return json.decodeFromString(ListSerializer(PythonPackageSurrogateDeserializer), stdout)
     }
     
 }

@@ -5,10 +5,7 @@ import com.jetbrains.python.sdk.flavors.PythonSdkFlavor
 
 
 /**
- * Exists to provide [UVSdkFlavor].
- * 
- * * Usefulness: Undetermined
- * * Implementation: Complete
+ * Exists only to provide [UVSdkFlavor].
  */
 internal class UVFlavorProvider : PythonFlavorProvider {
     

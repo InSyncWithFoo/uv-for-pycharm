@@ -8,8 +8,10 @@ import com.intellij.openapi.projectRoots.impl.SdkConfigurationUtil
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.platform.ProjectGeneratorPeer
 import com.jetbrains.python.newProject.steps.PythonProjectSpecificSettingsStep
+import insyncwithfoo.uv.message
 import insyncwithfoo.uv.moduleManager
 import insyncwithfoo.uv.rootManager
+import insyncwithfoo.uv.runBackgroundableTask
 import insyncwithfoo.uv.uv
 
 
@@ -26,9 +28,13 @@ private fun UVProjectGenerator.generateProject(settingsStep: UVProjectSettingsSt
 }
 
 
-// TODO: Use `uv init` instead
+/**
+ * Runs `uv init` at the newly created project directory.
+ */
 private fun Project.initializeUsingUV() {
-    this.uv!!.init()
+    runBackgroundableTask(message("progresses.title.init")) {
+        uv!!.init()
+    }
 }
 
 
@@ -54,11 +60,10 @@ internal class GenerateProjectCallback : AbstractCallback<Settings>() {
         val generator = (settingsStep as UVProjectSettingsStep).projectGenerator as UVProjectGenerator
         
         val settings = generator.makeSettings(settingsStep)
-        val newProject = generator.generateProject(settingsStep, settings) ?: error("Failed to generate project")
+        val newProject = generator.generateProject(settingsStep, settings)
+            ?: error("Failed to generate project")
         
-        val sdk = settings.sdk
-        
-        SdkConfigurationUtil.setDirectoryProjectSdk(newProject, sdk)
+        SdkConfigurationUtil.setDirectoryProjectSdk(newProject, settings.sdk)
         
         newProject.initializeUsingUV()
         

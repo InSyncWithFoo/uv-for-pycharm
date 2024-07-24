@@ -6,7 +6,7 @@
 	<!-- Public plugin name should be written in Title Case.
 		 Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
 	<!--suppress PluginXmlCapitalization -->
-	<name>uv</name>
+	<name>uv (Unofficial)</name>
 	
 	<!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
 	<vendor email="insyncwithfoo@gmail.com" url="https://github.com/InSyncWithFoo">InSync</vendor>
@@ -59,8 +59,11 @@
 		/>
 		
 		<intentionAction>
-			<language>Python</language>
+			<language/>
 			<className>insyncwithfoo.uv.intentions.UVSyncFromFiles</className>
+			<!--suppress PluginXmlCapitalization -->
+			<category>uv</category>
+			<skipBeforeAfter>true</skipBeforeAfter>
 		</intentionAction>
 	</extensions>
 	
@@ -68,9 +71,6 @@
 		<pythonFlavorProvider
 			implementation="insyncwithfoo.uv.UVFlavorProvider"
 		/>
-		
-		<!--suppress PluginXmlValidity -->
-		<pySdkProvider implementation="insyncwithfoo.uv.UVSdkProvider"/>
 		
 		<!--suppress PluginXmlValidity -->
 		<pythonPackageManagerProvider
@@ -82,6 +82,9 @@
 			order="first"
 			implementation="insyncwithfoo.uv.UVPackagingToolwindowActionProvider"
 		/>
+		
+		<!--suppress PluginXmlValidity -->
+		<pySdkProvider implementation="insyncwithfoo.uv.UVSdkProvider"/>
 	</extensions>
 	
 	<actions>
@@ -90,7 +93,7 @@
 			id="insyncwithfoo.uv.actions.UVSync"
 			class="insyncwithfoo.uv.actions.UVSync"
 			text="uv: Sync"
-			description="Run &quot;uv pip sync&quot; for this project"
+			description="Run &quot;uv sync&quot; for this project"
 			icon="AllIcons.Actions.Refresh"
 		/>
 	</actions>

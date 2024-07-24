@@ -5,14 +5,8 @@ import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.projectRoots.Sdk
 import com.intellij.openapi.roots.ProjectRootManager
-import com.intellij.platform.ide.progress.ModalTaskOwner
-import com.intellij.platform.ide.progress.TaskCancellation
-import com.intellij.platform.ide.progress.withBackgroundProgress
-import com.intellij.platform.ide.progress.withModalProgress
 import insyncwithfoo.uv.commands.ProjectUV
 import insyncwithfoo.uv.commands.UV
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.runBlocking
 import java.nio.file.Path
 
 
@@ -22,10 +16,6 @@ private val <T> Array<T>.onlyElement: T?
 
 private val Project.modules: Array<Module>
     get() = moduleManager.modules
-
-
-private val Project.modalTaskOwner: ModalTaskOwner
-    get() = ModalTaskOwner.project(this)
 
 
 internal val Project.uv: ProjectUV?
@@ -58,22 +48,3 @@ internal val Project.onlyModuleOrNull: Module?
 
 internal val Project.hasOnlyOneModule: Boolean
     get() = modules.size == 1
-
-
-internal fun <T> Project.runInBackground(
-    title: String,
-    cancellable: Boolean = false,
-    action: suspend CoroutineScope.() -> T
-) = runBlocking {
-    withBackgroundProgress(this@runInBackground, title, cancellable, action)
-}
-
-
-internal fun <T> Project.runInForeground(
-    title: String,
-    cancellation: TaskCancellation = TaskCancellation.nonCancellable(),
-    action: suspend CoroutineScope.() -> T
-) = runBlocking { 
-    withModalProgress(this@runInForeground.modalTaskOwner, title, cancellation, action)
-}
-

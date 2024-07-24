@@ -42,6 +42,7 @@ internal abstract class Command<Output> {
     
     open val runningMessage: String = "Running command..."
     
+    @Suppress("UsagesOfObsoleteApi")
     private val commandLine: GeneralCommandLine
         get() = GeneralCommandLine(executable.toString()).apply {
             withWorkDirectory(this@Command.workingDirectory?.toString())
