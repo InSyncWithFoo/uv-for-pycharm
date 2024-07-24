@@ -11,7 +11,7 @@ import com.intellij.openapi.ui.Messages
 
 
 private const val ID = "uv notifications"
-private val ICON = UVIcon.SMALL
+private val ICON = UVIcon.SMALL_SIMPLIFIED
 
 
 internal fun Notification.prettify() = apply {

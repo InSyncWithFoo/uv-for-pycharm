@@ -20,7 +20,7 @@ internal class UVProjectGenerator : PythonProjectGenerator<Settings>(), CustomSt
     
     override fun getName() = message("newProjectPanel.title")
     
-    override fun getLogo() = UVIcon.SMALL
+    override fun getLogo() = UVIcon.SMALL_SIMPLIFIED
     
     override fun getProjectSettings() = Settings()
     

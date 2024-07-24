@@ -18,7 +18,7 @@ internal object UVSdkFlavor : CPythonSdkFlavor<PyFlavorData.Empty>() {
      * 
      * Size: 16x16
      */
-    override fun getIcon() = UVIcon.TINY
+    override fun getIcon() = UVIcon.TINY_SIMPLIFIED
     
     override fun getFlavorDataClass(): Class<PyFlavorData.Empty> = PyFlavorData.Empty::class.java
     
