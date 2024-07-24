@@ -1,6 +1,9 @@
 # uv for PyCharm user documentation
 
-This plugin brings the various functionalities of [uv][1] closer to your IDE.
+This site serves as the user documentation for
+the <i>uv for PyCharm</i> plugin, a plugin
+that aims to maps the various
+functionalities of [uv][1] to PyCharm's.
 
 
 ## Disclaimer

@@ -8,6 +8,7 @@ import com.intellij.notification.NotificationType
 import com.intellij.notification.NotificationsManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
+import insyncwithfoo.uv.icons.UVIcon
 
 
 private const val ID = "uv notifications"

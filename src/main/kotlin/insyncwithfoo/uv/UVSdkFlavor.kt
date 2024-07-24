@@ -2,6 +2,7 @@ package insyncwithfoo.uv
 
 import com.jetbrains.python.sdk.flavors.CPythonSdkFlavor
 import com.jetbrains.python.sdk.flavors.PyFlavorData
+import insyncwithfoo.uv.icons.UVIcon
 import java.io.File
 
 

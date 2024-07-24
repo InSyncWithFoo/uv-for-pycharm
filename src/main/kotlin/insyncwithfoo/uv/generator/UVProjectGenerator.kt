@@ -4,7 +4,7 @@ import com.intellij.ide.util.projectWizard.AbstractNewProjectStep.AbstractCallba
 import com.intellij.ide.util.projectWizard.CustomStepProjectGenerator
 import com.intellij.platform.DirectoryProjectGenerator
 import com.jetbrains.python.newProject.PythonProjectGenerator
-import insyncwithfoo.uv.UVIcon
+import insyncwithfoo.uv.icons.UVIcon
 import insyncwithfoo.uv.message
 
 

@@ -1,4 +1,4 @@
-package insyncwithfoo.uv
+package insyncwithfoo.uv.icons
 
 import com.intellij.openapi.util.IconLoader
 

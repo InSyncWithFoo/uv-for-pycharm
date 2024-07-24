@@ -3,10 +3,13 @@
 
 ## What does this plugin do?
 
-It maps uv's functionalities to PyCharm's.
+It allows you to invoke uv's functionalities via PyCharm's.
 It interacts with the executable on your behalf.
 It saves you the unnecessary efforts of
 typing the same commands again and again.
+
+It also provides some aesthetic features,
+such as customized icons for `uv.lock` and `uv.toml` files.
 
 
 ## Is this an official Astral project?

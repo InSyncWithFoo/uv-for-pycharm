@@ -27,9 +27,10 @@
 	<!-- Extension points defined by the plugin.
 		 Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
 	<extensions defaultExtensionNs="com.intellij">
-		<!--<editorFactoryListener implementation="insyncwithfoo.uv.PyProjectTomlWatcher"/>-->
-		
-		<!--<postStartupActivity implementation="insyncwithfoo.uv.ConfigurationLoader" order="last"/>-->
+		<notificationGroup
+			displayType="STICKY_BALLOON"
+			id="uv notifications"
+		/>
 		
 		<!--suppress PluginXmlCapitalization -->
 		<applicationConfigurable
@@ -38,13 +39,13 @@
 			instance="insyncwithfoo.uv.configurations.UVConfigurable"
 		/>
 		
-		<notificationGroup
-			displayType="STICKY_BALLOON"
-			id="uv notifications"
-		/>
-		
 		<directoryProjectGenerator
 			implementation="insyncwithfoo.uv.generator.UVProjectGenerator"
+		/>
+		
+		<fileIconProvider
+			order="first"
+			implementation="insyncwithfoo.uv.icons.UVFilesIconProvider"
 		/>
 		
 		<fileType
