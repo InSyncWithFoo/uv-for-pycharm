@@ -5,7 +5,7 @@ the <i>uv for PyCharm</i> plugin, a plugin
 that aims to maps the various
 functionalities of [uv][1] to PyCharm's.
 
-It only supports the latest version of `uv` and
+It only supports the latest version of uv and
 can be installed on PyCharm 2024.1 and later.
 
 
