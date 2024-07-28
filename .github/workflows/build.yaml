@@ -253,7 +253,7 @@ jobs:
   draft:
     name: Release draft
     if: github.event_name != 'pull_request'
-    needs: [ build, test, inspect, verify ]
+    needs: [ build, test, verify ]
     runs-on: ubuntu-latest
     
     permissions:
@@ -285,3 +285,41 @@ jobs:
           ${{ needs.build.outputs.changelog }}
           EOM
           )"
+  
+  nightly:
+    name: Publish nightly version
+    if: github.event_name != 'pull_request'
+    needs: [ build, test, verify ]
+    runs-on: ubuntu-latest
+    
+    steps:
+      -
+        name: Fetch sources
+        uses: actions/checkout@v4
+      -
+        name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 17
+      -
+        name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+      -
+        name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-home-cache-cleanup: true
+      -
+        name: Publish plugin to Nightly channel
+        env:
+          PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+          CERTIFICATE_CHAIN: ${{ secrets.CERTIFICATE_CHAIN }}
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          PRIVATE_KEY_PASSWORD: ${{ secrets.PRIVATE_KEY_PASSWORD }}
+        run: |
+          chmod +x ./gradlew
+          NIGHTLY_VERSION=$(python .scripts/modify_build_for_nightly.py)
+          ./gradlew publishPlugin -Pchannel=Nightly -PpluginVersion=${NIGHTLY_VERSION}

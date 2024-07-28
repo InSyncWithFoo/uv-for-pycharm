@@ -7,15 +7,18 @@ import com.intellij.openapi.vfs.VirtualFile
 
 
 /**
- * Provides customized directory-tree icons
- * for `uv.lock` and `uv.toml.
+ * Provides customized icons for `uv.lock` and `uv.toml.
+ * 
+ * These icons are used in the *Project* tool window
+ * and editor tabs, among others.
  */
 internal class UVFilesIconProvider : FileIconProvider, DumbAware {
     
-    override fun getIcon(file: VirtualFile, flags: Int, project: Project?) = when (file.name) {
-        "uv.lock" -> UVIcon.TINY_SIMPLIFIED_WHITE
-        "uv.toml" -> UVIcon.TINY_SIMPLIFIED
-        else -> null
-    }
+    override fun getIcon(file: VirtualFile, flags: Int, project: Project?) =
+        when (file.name) {
+            "uv.lock" -> UVIcon.TINY_SIMPLIFIED_WHITE
+            "uv.toml" -> UVIcon.TINY_SIMPLIFIED
+            else -> null
+        }
     
 }

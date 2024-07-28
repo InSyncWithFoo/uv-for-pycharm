@@ -1,6 +1,6 @@
 ## uv: Sync
 
-It might be helpful if you don't want to use
+This action might be helpful if you don't want to use
 [the corresponding intention][1] for some reasons.
 
 !!! note
