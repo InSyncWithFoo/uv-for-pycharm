@@ -18,7 +18,7 @@ def get_nightly_version(content: str) -> str:
 	version_line = cast(re.Match[str], _version.search(content))
 	current_version = version_line['version']
 	
-	return f'{current_version}-{head_commit_hash}'
+	return f'{current_version}-nightly.{head_commit_hash}'
 
 
 def modify_content(content: str) -> tuple[str, str]:

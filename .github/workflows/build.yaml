@@ -291,6 +291,7 @@ jobs:
     if: github.event_name != 'pull_request'
     needs: [ build, test, verify ]
     runs-on: ubuntu-latest
+    continue-on-error: true
     
     steps:
       -
