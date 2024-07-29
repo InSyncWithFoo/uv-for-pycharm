@@ -3,6 +3,8 @@
 This action might be helpful if you don't want to use
 [the corresponding intention][1] for some reasons.
 
+![](./assets/actions-sync.png)
+
 !!! note
 
     Unlike the intention, this action does not save unsaved files.

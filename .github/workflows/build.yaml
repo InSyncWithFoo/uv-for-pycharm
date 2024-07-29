@@ -322,5 +322,5 @@ jobs:
           PRIVATE_KEY_PASSWORD: ${{ secrets.PRIVATE_KEY_PASSWORD }}
         run: |
           chmod +x ./gradlew
-          NIGHTLY_VERSION=$(python .scripts/modify_build_for_nightly.py)
+          NIGHTLY_VERSION=$(python .scripts/modify_version_for_nightly.py)
           ./gradlew publishPlugin -Pchannel=Nightly -PpluginVersion=${NIGHTLY_VERSION}

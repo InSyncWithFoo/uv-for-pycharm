@@ -1,9 +1,13 @@
 In the <i>New Project</i> dialog,
 there will be an <i>uv</i> option on the left column.
 
+This panel has the same basic functionalities
+as the default (<i>Pure Python</i>) panel.
 
-## Limitations
+![](./assets/new-project-panel.png)
 
-Due to technical limitations, it is not possible to extend the standard panel.
-While the custom panel for uv should have the same basic functionalities,
-you cannot use it with other frameworks.
+
+!!! note
+
+    Due to technical limitations, it is not possible to extend the standard panel.
+    You cannot use the <i>uv</i> panel with other frameworks.

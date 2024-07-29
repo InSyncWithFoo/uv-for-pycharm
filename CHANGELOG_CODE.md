@@ -14,7 +14,7 @@ For user-facing changes, see [`CHANGELOG.md`][_-1].
 
 ### Changed
 
-* Builds are now published to the Nightly channel. (HEAD)
+* Builds are now published to the Nightly channel. (a8e4120c, 496b2022)
 
 ### Dependencies
 
