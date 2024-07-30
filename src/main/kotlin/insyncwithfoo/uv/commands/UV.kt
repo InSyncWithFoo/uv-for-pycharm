@@ -22,17 +22,10 @@ internal sealed class UV {
     
     protected var blocking = false
     
-    // private fun build(command: Command): Command {
-    //     // TODO: Make the timeout limit configurable
-    //     command.workingDirectory = workingDirectory
-    //     command.timeout = 10_000
-    //    
-    //     return command
-    // }
-    //
-    // protected fun run(command: Command, runner: Command.() -> ProcessOutput): ProcessOutput {
-    //     return build(command).runner()
-    // }
+    protected fun <T> Command<T>.runWithTimeout(): T {
+        timeout = 10
+        return run()
+    }
     
     companion object {
         
@@ -94,7 +87,7 @@ internal open class FreeUV(override val executable: Path) : UV() {
     override val workingDirectory: Path? = null
     
     fun version(): String {
-        return VersionCommand(executable).run()
+        return VersionCommand(executable).runWithTimeout()
     }
     
 }
@@ -107,7 +100,7 @@ internal class LockedUV(executable: Path, override val workingDirectory: Path) :
     
     fun createVenv(baseInterpreter: Path, name: String? = null): VenvName? {
         val venvName = """(?<=Creating virtualenv at: ).+""".toRegex()
-        val output = VenvCommand(executable, workingDirectory, baseInterpreter, name).run()
+        val output = VenvCommand(executable, workingDirectory, baseInterpreter, name).runWithTimeout()
         
         if (!output.checkSuccess(LOGGER)) {
             return null
@@ -128,27 +121,27 @@ internal class ProjectUV(executable: Path, private val project: Project) : FreeU
         get() = project.path!!
     
     fun add(target: PythonPackageSpecification): Successful {
-        return AddCommand(executable, workingDirectory, target).run()
+        return AddCommand(executable, workingDirectory, target).runWithTimeout()
     }
     
     fun remove(target: String): Successful {
-        return RemoveCommand(executable, workingDirectory, target).run()
+        return RemoveCommand(executable, workingDirectory, target).runWithTimeout()
     }
     
     fun list(): InstalledPackages? {
-        return PipListCommand(executable, workingDirectory).run()
+        return PipListCommand(executable, workingDirectory).runWithTimeout()
     }
     
     fun update(specification: PythonPackageSpecification): Successful {
-        return UpgradeCommand(executable, workingDirectory, specification).run()
+        return UpgradeCommand(executable, workingDirectory, specification).runWithTimeout()
     }
     
     fun sync(): Successful {
-        return SyncCommand(executable, workingDirectory).run()
+        return SyncCommand(executable, workingDirectory).runWithTimeout()
     }
     
     fun init(): Successful {
-        return InitCommand(executable, workingDirectory).run()
+        return InitCommand(executable, workingDirectory).runWithTimeout()
     }
     
 }

@@ -15,7 +15,7 @@ import org.jdom.Element
 /**
  * Responsible for various actions that [PySdkProvider] supports.
  * 
- * The interface is theoretically deprecated/obsolete.
+ * The interface is supposed to be deprecated/obsolete.
  * Regardless, there have yet to be a clean replacement.
  */
 @Suppress("UnstableApiUsage")
@@ -31,7 +31,7 @@ internal class UVSdkProvider : PySdkProvider {
         return null
     }
     
-    // TODO: Find out whether this actually works
+    // This never gets called
     override fun createInstallPackagesQuickFix(module: Module): LocalQuickFix? {
         val sdk = PythonSdkUtil.findPythonSdk(module) ?: return null
         

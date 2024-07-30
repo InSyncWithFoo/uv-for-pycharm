@@ -19,7 +19,7 @@ private fun noExecutableFound() {
 
 
 private fun FileDocumentManager.savePyProjectToml() {
-    unsavedDocuments.forEach {        
+    unsavedDocuments.forEach {
         if (getFile(it)?.name == "pyproject.toml") {
             saveDocument(it)
         }
