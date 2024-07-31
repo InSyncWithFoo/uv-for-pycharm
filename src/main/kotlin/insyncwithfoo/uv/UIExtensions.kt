@@ -3,6 +3,7 @@ package insyncwithfoo.uv
 import com.intellij.facet.ui.ValidationResult
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
 import com.intellij.openapi.observable.properties.ObservableMutableProperty
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.projectRoots.Sdk
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.openapi.ui.ValidationInfo
@@ -19,10 +20,12 @@ import javax.swing.JComponent
 import kotlin.reflect.KMutableProperty0
 
 
-private fun TextFieldWithBrowseButton.addSingleFileChooser() {
-    val (title, description, project) = Triple(null, null, null)
+private fun TextFieldWithBrowseButton.addSingleFileChooser(
+    title: String? = null,
+    description: String? = null,
+    project: Project? = null
+) {
     val descriptor = FileChooserDescriptorFactory.createSingleFileDescriptor()
-    
     addBrowseFolderListener(title, description, project, descriptor)
 }
 

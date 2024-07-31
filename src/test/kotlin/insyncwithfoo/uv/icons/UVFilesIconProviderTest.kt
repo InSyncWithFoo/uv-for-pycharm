@@ -6,7 +6,7 @@ import junit.framework.TestCase
 import javax.swing.Icon
 
 
-internal class UVFilesIconProviderTest : TestCase() {
+class UVFilesIconProviderTest : TestCase() {
     
     fun `test getIcon - uv-lock`() {
         doTest(LightVirtualFile("uv.lock"), UVIcon.TINY_SIMPLIFIED_WHITE)

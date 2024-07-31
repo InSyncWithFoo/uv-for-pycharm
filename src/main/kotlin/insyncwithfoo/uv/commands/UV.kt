@@ -23,7 +23,7 @@ internal sealed class UV {
     protected var blocking = false
     
     protected fun <T> Command<T>.runWithTimeout(): T {
-        timeout = 10
+        timeout = -1
         return run()
     }
     
