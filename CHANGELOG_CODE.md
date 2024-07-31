@@ -18,7 +18,7 @@ For user-facing changes, see [`CHANGELOG.md`][_-1].
 
 ### Dependencies
 
-* IntelliJ Platform Gradle Plugin is updated to 2.0.0-rc2. (d9d3bd53)
+* IntelliJ Platform Gradle Plugin is updated to 2.0.0. (d9d3bd53, HEAD)
 
 
 ## [0.1.0-whl1] - 2024-07-25
