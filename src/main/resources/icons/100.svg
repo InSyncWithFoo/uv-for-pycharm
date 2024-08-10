@@ -7,13 +7,9 @@
 	viewBox="0 0 330 330"
 	xmlns="http://www.w3.org/2000/svg"
 >
-	<g>
-		<g>
-			<rect height="100%" width="100%" rx="66" fill="#26102f"/>
-			<path
-				style="fill: #d256dc;"
-				d="M 65,65 h92 v130 h16 v-130 h92 v200 h-16 v-20 h-8 a20,20 0 0 1 -20,20 h-136 a20,20 0 0 1 -20,-20 z"
-			/>
-		</g>
-	</g>
+	<rect height="100%" width="100%" rx="66" fill="#26102f"/>
+	<path
+		style="fill: #d256dc;"
+		d="M 65,65 h92 v130 h16 v-130 h92 v200 h-16 v-20 h-8 a20,20 0 0 1 -20,20 h-136 a20,20 0 0 1 -20,-20 z"
+	/>
 </svg>

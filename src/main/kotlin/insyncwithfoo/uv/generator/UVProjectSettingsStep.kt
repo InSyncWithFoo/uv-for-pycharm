@@ -207,8 +207,6 @@ internal class UVProjectSettingsStep(projectGenerator: DirectoryProjectGenerator
             checkBox(PyBundle.message("new.project.git")).bindSelected(initializeGit)
         }
         
-        row("") {}
-        
         panel {
             rowWithTopGap(PySdkBundle.message("python.venv.base.label")) {
                 // TODO: Switch to com.jetbrains.python.sdk.add.v2.pythonInterpreterComboBox

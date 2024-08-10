@@ -2,7 +2,6 @@
 
 # Code changelog
 
-
 This page documents code changes.
 For user-facing changes, see [`CHANGELOG.md`][_-1].
 

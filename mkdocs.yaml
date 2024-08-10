@@ -13,7 +13,7 @@ exclude_docs: |
 theme:
   name: material
   favicon: assets/icon.svg
-  logo: assets/icon-outline.svg
+  logo: assets/icon-white.svg
   palette:
     -
       media: "(prefers-color-scheme: light)"
