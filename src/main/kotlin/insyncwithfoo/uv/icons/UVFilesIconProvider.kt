@@ -7,7 +7,7 @@ import com.intellij.openapi.vfs.VirtualFile
 
 
 /**
- * Provides customized icons for `uv.lock` and `uv.toml.
+ * Provides customized icons for `uv.lock` and `uv.toml`.
  * 
  * These icons are used in the *Project* tool window
  * and editor tabs, among others.
