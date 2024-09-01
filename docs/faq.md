@@ -16,7 +16,7 @@ such as customized icons for `uv.lock` and `uv.toml` files.
 
 No. However:
 
-* Astral was [made aware of it][1] during to its development, and
+* Astral was [made aware of it][1] during its development, and
 * It <em>is</em> meant to serve as the first step towards an "official" plugin.
 
 

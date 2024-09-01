@@ -1,9 +1,15 @@
-# uv for PyCharm
-
 > [!NOTE]
-> This plugin is a work-in-progress.
-> It may or may not work.
-> Use it at your own risk.
+> This plugin is a broken prototype and has been deprecated.
+> 
+> All of its functionalities have been migrated to [RyeCharm][0],
+> an all-in-one plugin for all Astral-backed Python tools.
+
+
+  [0]: https://github.com/InSyncWithFoo/ryecharm
+
+----
+
+# uv for PyCharm
 
 [![Build](https://github.com/InSyncWithFoo/uv-for-pycharm/actions/workflows/build.yaml/badge.svg)][2]
 [![Docs](https://github.com/InSyncWithFoo/uv-for-pycharm/actions/workflows/docs.yaml/badge.svg)][3]
